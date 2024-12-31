@@ -24,11 +24,11 @@
 			</div>
 			<div class="mb-3">
 			    <label class="form-label" for="nome">Nome Completo</label>
-			    <input type="text" class="form-control" id="nome" name="nome" placeholder="Fulano Cicrano Deltrano da Silva" maxlength="50" required>
+			    <input type="text" class="form-control" id="nome" name="nome" placeholder="Fulano Cicrano Deltrano da Silva" maxlength="50" required autocomplete="off">
 			</div>
 			<div class="mb-3">
 			    <label class="form-label" for="email">Email</label>
-			    <input type="email" class="form-control" id="email" name="email" placeholder="meuemail@dominio" maxlength="50" required>
+			    <input type="email" class="form-control" id="email" name="email" placeholder="meuemail@dominio" maxlength="50" required autocomplete="off">
 			</div>
 			<div class="input-group mb-3">
 			    <button type="button" class="btn btn-primary dropdown-toggle" id="cpf-cnpj" data-bs-toggle="dropdown">CPF</button>
@@ -36,7 +36,7 @@
 				<li class="dropdown-item cpf-cnpj">CPF</li>
 				<li class="dropdown-item cpf-cnpj">CNPJ</li>
 			    </ul>
-			    <input type="text" class="form-control" id="cpf-cnpj" name="cpf-cnpj" placeholder="Insira seu CPF" maxlength="14" required>
+			    <input type="text" class="form-control" id="cpf-cnpj" name="cpf-cnpj" placeholder="Insira seu CPF" maxlength="14" required autocomplete="off">
 			</div>
 			<div class="mb-3">
 			    <label class="form-label" for="genero">Gênero</label>
@@ -51,43 +51,43 @@
 			<h2>Dados de Acesso</h2>
 			<div class="mb-3">
 			    <label class="form-label" for="usuario">Usuario</label>
-			    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="user.name" maxlength="20" required>
+			    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="user.name" maxlength="20" required autocomplete="off">
 			</div>
 			<div class="mb-3 has-validation">
 			    <label class="form-label" for="senha">Senha</label>
-			    <input type="password" class="form-control is-invalid" id="senha" name="senha" placeholder="Insira sua senha" required>
+			    <input type="password" class="form-control is-invalid" id="senha" name="senha" placeholder="Insira sua senha" required autocomplete="off">
 			</div>
 			<div class="mb-3 has-validation">
 			    <label class="form-label" for="repetir-senha">Repetir Senha</label>
-			    <input type="password" class="form-control is-invalid" id="repetir-senha" name="repetir-senha" placeholder="Insira sua senha novamente" required>
-			    <div id="mensagem" class="invalid-feedback">
-				Senhas não coindicem
-			    </div>
+			    <input type="password" class="form-control is-invalid" id="repetir-senha" name="repetir-senha" placeholder="Insira sua senha novamente" required autocomplete="off">
+			    <div id="mensagem" class="invalid-feedback">Senhas não coindicem</div>
 			</div>
 			<h2>Endereço</h2>
-			<div class="mb-3">
+			<div class="mb-3 has-validation">
 			    <label for="cep" class="form-label">CEP</label>
-			    <input type="text" class="form-control" id="cep" aria-describedby="CEP" name="cep" maxlength="8" placeholder="00000000" required>
+			    <input type="text" class="form-control is-invalid" id="cep" aria-describedby="CEP" name="cep" maxlength="8" placeholder="00000000" required autocomplete="off">
+			    <div id="mensagem-cep" class="invalid-feedback">Preencha o CEP corretamente</div>
 			</div>
-			<div class="mb-3">
+			<div class="mb-3 has-validation">
 			    <label for="numero" class="form-label">Numero</label>
-			    <input type="text" class="form-control" id="numero" name="numero" manlength="10" placeholder="25" required>
+			    <input type="text" class="form-control is-invalid" id="numero" name="numero" manlength="10" placeholder="25" required autocomplete="off">
+			    <div id="mensagem-numero" class="invalid-feedback">Preencha apenas com números!</div>
 			</div>
 			<div class="mb-3">
 			    <label for="rua" class="form-label">Rua</label>
-			    <input type="text" class="form-control" id="rua" name="rua" disabled>
+			    <input type="text" class="form-control" id="rua" name="rua" readonly required>
 			</div>
 			<div class="mb-3">
 			    <label for="bairro" class="form-label">Bairro</label>
-			    <input type="text" class="form-control" id="bairro" name="bairro" disabled>
+			    <input type="text" class="form-control" id="bairro" name="bairro" readonly required>
 			</div>
 			<div class="mb-3">
 			    <label class="form-label" for="cidade">Cidade</label>
-			    <input class="form-control" type='text' name='cidade' disabled id='cidade'>
+			    <input class="form-control" type='text' name='cidade' id='cidade' readonly required>
 			</div>
 			<div class="mb-3">
 			    <label class="form-label" for="estado">Estado</label>
-			    <input class="form-control" type='text' name='estado' disabled id='estado'>
+			    <input class="form-control" type='text' name='estado' id='estado' readonly required>
 			</div>
 			<h2 id="contato">Contato</h2>
 			<div class="mb-3">
@@ -114,5 +114,10 @@ if (isset($_POST['registrar'])) {
     $REG_GENERO = addslashes($_POST['genero']);
     $REG_USER = addslashes($_POST['usuario']);
     $REG_SENHA = addslashes($_POST['senha']);
+    $REG_CEP = addslashes($_POST['cep']);
+    $REG_NUMERO = addslashes($_POST['numero']);
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
 }
 ?>

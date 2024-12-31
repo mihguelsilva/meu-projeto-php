@@ -1,13 +1,25 @@
+let b;
 document.addEventListener('DOMContentLoaded', () => {
+    let registrar = document.querySelector('button#registrar');
     let cep = document.querySelector('input#cep');
     let rua = document.querySelector('input#rua');
     let bairro = document.querySelector('input#bairro');
     let cidade = document.querySelector('input#cidade');
     let estado = document.querySelector('input#estado');
+    let divCep = document.querySelector('div#mensagem-cep');
     cep.addEventListener('keyup', (e) => {
 	let data = e.target.value;
-	if (data.match(/^(\d+){1,8}$/)) {
+	if (data.match(/^(\d+){8}$/)) {
+	    divCep.removeAttribute('class');
+	    divCep.setAttribute('class', 'valid-feedback');
+	    divCep.innerText = 'CEP preenchido corretamente!';
+	    registrar.removeAttribute('disabled');
 	    if (data.length == 8) cepApi();
+	} else {
+	    divCep.removeAttribute('class');
+	    divCep.setAttribute('class', 'invalid-feedback');
+	    divCep.innerText = 'Você precisa preencher os 8 números do CEP!';
+	    registrar.setAttribute('disabled', 'true');
 	}
 	function cepApi() {
 	    fetch('https://viacep.com.br/ws/' + data + '/json/')
@@ -74,12 +86,25 @@ document.addEventListener('DOMContentLoaded', () => {
 	    }
 	}
     });
-    let buttonResidencial = document.querySelector('button#residencial');
-    let buttonComercial = document.querySelector('button#comercial');
-    let buttonCelular = document.querySelector('button#celular');
+    let numero = document.querySelector('input#numero');
+    let divNumero = document.querySelector('div#mensagem-numero');
+    numero.addEventListener('keyup', (e) => {
+	let v = e.target.value;
+	if (v.match(/^\d+$/)) {
+	    divNumero.removeAttribute('class');
+	    divNumero.setAttribute('class', 'valid-feedback');
+	    divNumero.innerText = 'Campo preenchido corretamente';
+	    registrar.removeAttribute('disabled');
+	} else {
+	    divNumero.removeAttribute('class');
+	    divNumero.setAttribute('class', 'invalid-feedback');
+	    divNumero.innerText = 'Preencha apenas com números!';
+	    registrar.setAttribute('disabled', 'true')
+	}
+    })
     let buttonTelefone = document.querySelectorAll('button.telefone');
     buttonTelefone.forEach((element, index) => {
-	let b = 0;
+	b = 0;
 	element.addEventListener('click', (e) => {
 	    b++;
 	    let nome = e.target.getAttribute('id');
@@ -89,30 +114,36 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
     });
     function criarCampoTelefone(inc, numero, nome, elemento) {
-	if ((inc > 1 && nome == 'residencial') || (inc > 2 && nome == 'comercial') || (inc > 3 && nome == 'celular')) {
+	if (inc > 3) {
 	    Swal.fire({
 		title: 'Erro!',
-		text: 'Você só pode registrar 1 telefone ' + nome + '!',
+		text: 'Você só pode registrar 3 telefones ' + nome + '!',
 		icon: 'error',
 		confirmButtonText: 'Fechar'
 	    });
 	} else {
 	    let div = document.createElement('div');
 	    div.setAttribute('class', 'input-group mt-3');
-	    div.setAttribute('id', nome);
+	    div.setAttribute('id', nome+inc);
+	    let button = document.createElement('button');
+	    button.setAttribute('type', 'button');
+	    button.setAttribute('id', nome+inc);
+	    button.setAttribute('class', 'btn btn-danger');
+	    button.setAttribute('onclick', 'removerTelefone(this)')
+	    button.append('X');
 	    let telRes = document.createElement('input');
-	    telRes.setAttribute('id', nome);
+	    telRes.setAttribute('id', nome+inc);
 	    telRes.setAttribute('class', 'form-group p-1');
-	    telRes.setAttribute('name', nome+inc);
+	    telRes.setAttribute('name', nome+'[]');
 	    telRes.setAttribute('placeholder', numero);
 	    div.append(telRes);
+	    div.append(button);
 	    elemento.after(div);
 	}
     }
     let senha = document.querySelector('input#senha');
     let rSenha = document.querySelector('input#repetir-senha');
     let divMensagem = document.querySelector('div#mensagem');
-    let registrar = document.querySelector('button#registrar');
     senha.addEventListener('keyup', (e) => {
 	let v = e.target.value;
 	verificarSenha(v, rSenha.value)
@@ -134,4 +165,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	    divMensagem.innerText = 'senhas coincidem';
 	}
     }
+    let nomeUsuario = document.querySelector('input#nome');
+    let usuario = document.querySelector('input#usuario');
+    nomeUsuario.addEventListener('keyup', (e) => {
+	let v = e.target.value;
+	let vArray = v.split(' ');
+	let vPrimeiro = vArray[0].toLowerCase();
+	let vUltimo = vArray.pop().toLowerCase();
+	let username = vPrimeiro + '.' + vUltimo;
+	usuario.setAttribute('value', username);
+    })
 });
+function removerTelefone(e) {
+    let id = e.getAttribute('id');
+    let divTel = document.querySelector('div#' + id);
+    let inputTel = document.querySelector('input#' + id);
+    inputTel.remove();
+    e.remove();
+    divTel.remove();
+    b = b - 1;
+}
