@@ -2,11 +2,12 @@
 <html lang="pt-br" data-bs-theme="dark">
     <head>
 	<meta charset='utf-8'>
-	<script src='./cep.js'></script>
+	<script src='/js/cadastro.js'></script>
 	<title>Registrando Usuário</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
 	<header class="container-fluid p-5 bg-secondary text-center">
@@ -15,11 +16,11 @@
 	<section class='container p-5 mx-auto'>
 	    <div class="row">
 		<div class="col-xl-6 col-sm-12 mx-auto">
-		    <form method="POST">
+		    <form method="POST" class="was-validated" enctype="multipart/form-data">
 			<h2>Dados Pessoais</h2>
 			<div class="mb-3">
 			    <label class="form-label" for="foto-perfil">Foto de Perfil</label>
-			    <input type="file" class="form-control-file" id="foto-perfil" name="foto-perfil" required>
+			    <input type="file" class="form-control-file" id="foto-perfil" name="foto-perfil">
 			</div>
 			<div class="mb-3">
 			    <label class="form-label" for="nome">Nome Completo</label>
@@ -54,16 +55,16 @@
 			</div>
 			<div class="mb-3">
 			    <label class="form-label" for="senha">Senha</label>
-			    <input type="password" class="form-control" id="senha" name="senha" placeholder="Insira sua senha">
+			    <input type="password" class="form-control" id="senha" name="senha" placeholder="Insira sua senha" required>
 			</div>
 			<div class="mb-3">
 			    <label class="form-label" for="repetir-senha">Repetir Senha</label>
-			    <input type="password" class="form-control" id="repetir-senha" name="repetir-senha" placeholder="Insira sua senha novamente">
+			    <input type="password" class="form-control" id="repetir-senha" name="repetir-senha" placeholder="Insira sua senha novamente" required>
 			</div>
 			<h2>Endereço</h2>
 			<div class="mb-3">
 			    <label for="cep" class="form-label">CEP</label>
-			    <input type="text" class="form-control" id="cep" aria-describedby="CEP" name="cep" maxlength="8" placeholder="00000000">
+			    <input type="text" class="form-control" id="cep" aria-describedby="CEP" name="cep" maxlength="8" placeholder="00000000" required>
 			</div>
 			<div class="mb-3">
 			    <label for="numero" class="form-label">Numero</label>
@@ -87,13 +88,13 @@
 			</div>
 			<h2 id="contato">Contato</h2>
 			<div class="mb-3">
-			    <button type="button" id="residencial" class="btn btn-primary">Adicionar Telefone Residencial</button>
+			    <button type="button" id="residencial" class="btn btn-primary telefone">Adicionar Telefone Residencial</button>
 			</div>
 			<div class="mb-3">
-			    <button type="button" id="comercial" class="btn btn-secondary">Adicionar Telefone Comercial</button>
+			    <button type="button" id="comercial" class="btn btn-secondary telefone">Adicionar Telefone Comercial</button>
 			</div>
 			<div class="mb-3">
-			    <button type="button" id="celular" class="btn btn-success">Adicionar Telefone Celular</button>
+			    <button type="button" id="celular" class="btn btn-success telefone">Adicionar Telefone Celular</button>
 			</div>
 			<button type="submit" class="btn btn-light" value="Registrar" name="registrar">Registrar</button>
 		    </form>
@@ -102,3 +103,8 @@
 	</section>
     </body>
 </html>
+<?php
+if (isset($_POST['registrar'])) {
+    echo 'Registrando novo usuario';
+}
+?>

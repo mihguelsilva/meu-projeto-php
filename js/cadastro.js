@@ -73,6 +73,40 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	    }
 	}
-
     });
-})
+    let buttonResidencial = document.querySelector('button#residencial');
+    let buttonComercial = document.querySelector('button#comercial');
+    let buttonCelular = document.querySelector('button#celular');
+    let buttonTelefone = document.querySelectorAll('button.telefone');
+    buttonTelefone.forEach((element, index) => {
+	let b = 0;
+	element.addEventListener('click', (e) => {
+	    b++;
+	    let nome = e.target.getAttribute('id');
+	    let num;
+	    (nome == 'residencial' || nome == 'comercial') ? num = '08133333333' : num = '081999999999';
+	    criarCampoTelefone(b, num, nome, e.target);
+	});
+    });
+    function criarCampoTelefone(inc, numero, nome, elemento) {
+	if ((inc > 1 && nome == 'residencial') || (inc > 2 && nome == 'comercial') || (inc > 3 && nome == 'celular')) {
+	    Swal.fire({
+		title: 'Erro!',
+		text: 'Você só pode registrar 1 telefone ' + nome + '!',
+		icon: 'error',
+		confirmButtonText: 'Fechar'
+	    });
+	} else {
+	    let div = document.createElement('div');
+	    div.setAttribute('class', 'input-group mt-3');
+	    div.setAttribute('id', nome);
+	    let telRes = document.createElement('input');
+	    telRes.setAttribute('id', nome);
+	    telRes.setAttribute('class', 'form-group p-1');
+	    telRes.setAttribute('name', nome+inc);
+	    telRes.setAttribute('placeholder', numero);
+	    div.append(telRes);
+	    elemento.after(div);
+	}
+    }
+});
