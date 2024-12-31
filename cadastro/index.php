@@ -91,13 +91,13 @@
 			</div>
 			<h2 id="contato">Contato</h2>
 			<div class="mb-3">
-			    <button type="button" id="residencial" class="btn btn-primary telefone">Adicionar Telefone Residencial</button>
+			    <button type="button" id="residencial" class="btn btn-primary telefone w-100">Adicionar Telefone Residencial</button>
 			</div>
 			<div class="mb-3">
-			    <button type="button" id="comercial" class="btn btn-secondary telefone">Adicionar Telefone Comercial</button>
+			    <button type="button" id="comercial" class="btn btn-secondary telefone w-100">Adicionar Telefone Comercial</button>
 			</div>
 			<div class="mb-3">
-			    <button type="button" id="celular" class="btn btn-success telefone">Adicionar Telefone Celular</button>
+			    <button type="button" id="celular" class="btn btn-success telefone w-100">Adicionar Telefone Celular</button>
 			</div>
 			<button type="submit" class="btn btn-light" value="Registrar" name="registrar"  id="registrar">Registrar</button>
 		    </form>

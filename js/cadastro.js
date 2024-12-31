@@ -134,8 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
 	    button.append('X');
 	    let telRes = document.createElement('input');
 	    telRes.setAttribute('id', nome+inc);
-	    telRes.setAttribute('class', 'form-group p-1 definir-telefone-' + nome);
+	    telRes.setAttribute('class', 'form-control p-1 input-telefone definir-telefone-' + nome);
 	    telRes.setAttribute('name', nome+'[]');
+	    if(nome == 'residencial' || nome == 'comercial') {
+		telRes.setAttribute('maxlength', '11');
+	    } else {
+		telRes.setAttribute('maxlength', '12');
+	    }
+	    telRes.setAttribute('onkeyup', 'verificar(this)');
 	    telRes.setAttribute('placeholder', numero);
 	    div.append(telRes);
 	    div.append(button);
@@ -185,4 +191,17 @@ function removerTelefone(e) {
     e.remove();
     divTel.remove();
     b = b - 1;
+}
+
+function verificar(e) {
+    let v = e.value;
+    if(!v.match(/^\d+$/)) {
+	Swal.fire({
+	    title: 'Erro!',
+	    text: 'O campo só pode ser preenchido com números!',
+	    icon: 'error',
+	    confirmButtonText: 'Fechar'
+	});
+	e.value = '';
+    };
 }
