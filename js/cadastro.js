@@ -114,7 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
     });
     function criarCampoTelefone(inc, numero, nome, elemento) {
-	if (inc > 3) {
+	let checkInput = document.querySelectorAll('input.definir-telefone-' + nome);
+	if(checkInput.length == 3) {
 	    Swal.fire({
 		title: 'Erro!',
 		text: 'Você só pode registrar 3 telefones ' + nome + '!',
@@ -133,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	    button.append('X');
 	    let telRes = document.createElement('input');
 	    telRes.setAttribute('id', nome+inc);
-	    telRes.setAttribute('class', 'form-group p-1');
+	    telRes.setAttribute('class', 'form-group p-1 definir-telefone-' + nome);
 	    telRes.setAttribute('name', nome+'[]');
 	    telRes.setAttribute('placeholder', numero);
 	    div.append(telRes);
