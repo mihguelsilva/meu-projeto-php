@@ -1,3 +1,8 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'global.php';
+require_once CONNECT;
+require_once CL_USER;
+?>
 <!DOCTYPE html>
 <html lang="pt-br" data-bs-theme="dark">
     <head>
@@ -111,13 +116,37 @@ if (isset($_POST['registrar'])) {
     $REG_NOME = addslashes($_POST['nome']);
     $REG_EMAIL = addslashes($_POST['email']);
     $REG_CPF_CNPJ = addslashes($_POST['cpf-cnpj']);
+    $REG_CPF_CNPJ = preg_replace('/(\.){0,}(\-){0,}(\/){0,}/i', "", $REG_CPF_CNPJ);
     $REG_GENERO = addslashes($_POST['genero']);
     $REG_USER = addslashes($_POST['usuario']);
     $REG_SENHA = addslashes($_POST['senha']);
     $REG_CEP = addslashes($_POST['cep']);
     $REG_NUMERO = addslashes($_POST['numero']);
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
+    $REG_RUA = addslashes($_POST['rua']);
+    $REG_BAIRRO = addslashes($_POST['bairro']);
+    $REG_CIDADE = addslashes($_POST['cidade']);
+    $REG_ESTADO = addslashes($_POST['estado']);
+    if (isset($_POST['residencial'])) {
+	foreach($_POST['residencial'] as $KEY=>$VALUE) {
+	    $REG_RESIDENCIAL[$KEY] = addslashes($VALUE);
+	}
+    } else {
+	$REG_RESIDENCIAL = array();
+    }
+    if (isset($_POST['comercial'])) {
+	foreach($_POST['comercial'] as $KEY=>$VALUE) {
+	    $REG_COMERCIAL[$KEY] = addslashes($VALUE);
+	}
+    } else {
+	$REG_COMERCIAL = array();
+    }
+    if (isset($_POST['celular'])) {
+	foreach($_POST['celular'] as $KEY=>$VALUE) {
+	    $REG_CELULAR[$KEY] = addslashes($VALUE);
+	}
+    } else {
+	$REG_CELULAR = array();
+    }
+    // header('location: /login');
 }
 ?>
