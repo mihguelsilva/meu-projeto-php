@@ -109,4 +109,29 @@ document.addEventListener('DOMContentLoaded', () => {
 	    elemento.after(div);
 	}
     }
+    let senha = document.querySelector('input#senha');
+    let rSenha = document.querySelector('input#repetir-senha');
+    let divMensagem = document.querySelector('div#mensagem');
+    let registrar = document.querySelector('button#registrar');
+    senha.addEventListener('keyup', (e) => {
+	let v = e.target.value;
+	verificarSenha(v, rSenha.value)
+    });
+    rSenha.addEventListener('keyup', (e) => {
+	let v = e.target.value;
+	verificarSenha(v, senha.value)
+    });
+    function verificarSenha(valor1, valor2) {
+	if (valor1 != valor2 || valor1 == "" || valor2 == "") {
+	    registrar.setAttribute('disabled', 'true');
+	    divMensagem.removeAttribute('class');
+	    divMensagem.setAttribute('class', 'invalid-feedback');
+	    divMensagem.innerText = 'senhas não coincidem';
+	} else if (valor1 == valor2 && valor1 != "" && valor2 != "") {
+	    registrar.removeAttribute('disabled');
+	    divMensagem.removeAttribute('class');
+	    divMensagem.setAttribute('class', 'valid-feedback');
+	    divMensagem.innerText = 'senhas coincidem';
+	}
+    }
 });

@@ -53,13 +53,16 @@
 			    <label class="form-label" for="usuario">Usuario</label>
 			    <input type="text" class="form-control" id="usuario" name="usuario" placeholder="user.name" maxlength="20" required>
 			</div>
-			<div class="mb-3">
+			<div class="mb-3 has-validation">
 			    <label class="form-label" for="senha">Senha</label>
-			    <input type="password" class="form-control" id="senha" name="senha" placeholder="Insira sua senha" required>
+			    <input type="password" class="form-control is-invalid" id="senha" name="senha" placeholder="Insira sua senha" required>
 			</div>
-			<div class="mb-3">
+			<div class="mb-3 has-validation">
 			    <label class="form-label" for="repetir-senha">Repetir Senha</label>
-			    <input type="password" class="form-control" id="repetir-senha" name="repetir-senha" placeholder="Insira sua senha novamente" required>
+			    <input type="password" class="form-control is-invalid" id="repetir-senha" name="repetir-senha" placeholder="Insira sua senha novamente" required>
+			    <div id="mensagem" class="invalid-feedback">
+				Senhas não coindicem
+			    </div>
 			</div>
 			<h2>Endereço</h2>
 			<div class="mb-3">
@@ -96,7 +99,7 @@
 			<div class="mb-3">
 			    <button type="button" id="celular" class="btn btn-success telefone">Adicionar Telefone Celular</button>
 			</div>
-			<button type="submit" class="btn btn-light" value="Registrar" name="registrar">Registrar</button>
+			<button type="submit" class="btn btn-light" value="Registrar" name="registrar"  id="registrar">Registrar</button>
 		    </form>
 		</div>
 	    </div>
@@ -105,6 +108,11 @@
 </html>
 <?php
 if (isset($_POST['registrar'])) {
-    echo 'Registrando novo usuario';
+    $REG_NOME = addslashes($_POST['nome']);
+    $REG_EMAIL = addslashes($_POST['email']);
+    $REG_CPF_CNPJ = addslashes($_POST['cpf-cnpj']);
+    $REG_GENERO = addslashes($_POST['genero']);
+    $REG_USER = addslashes($_POST['usuario']);
+    $REG_SENHA = addslashes($_POST['senha']);
 }
 ?>
