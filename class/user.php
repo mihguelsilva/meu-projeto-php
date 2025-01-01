@@ -29,13 +29,15 @@ class Usuario
             $sql->execute();
             $id_user = $pdo->lastInsertId();
             $PERFIL = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'perfil';
-            mkdir($PERFIL . DIRECTORY_SEPARATOR . $id_user);
             $ID_DIR = $PERFIL . DIRECTORY_SEPARATOR . $id_user;
+            if (!is_dir($ID_DIR)) {
+                mkdir($PERFIL . DIRECTORY_SEPARATOR . $id_user);
+            }
             if ($foto != NULL) {
                 if ($foto['type'] == 'image/jpeg' || $foto['type'] == 'image/png') {
-                    $fotoNome = md5(rand(0.99999) . time() . '.jpg');
-                    move_uploaded_file($foto['tmp_name'], $ID_DIR . $fotoNome);
-                    $sql = $pdo->prepare('UPDATE USER_REGISTER SET FOTO = :foto WHERE USER_ID = :id');
+                    $fotoNome = md5(rand(0,99999).time().".jpg");
+                    move_uploaded_file($foto['tmp_name'], $ID_DIR . DIRECTORY_SEPARATOR . $fotoNome);
+                    $sql = $pdo->prepare('UPDATE USER_REGISTER SET PHOTO = :foto WHERE ID = :id');
                     $sql->bindValue(':foto', $fotoNome);
                     $sql->bindValue(':id', $id_user);
                     $sql->execute();
@@ -73,5 +75,33 @@ class Usuario
         } else {
             return false;
         }
+    }
+    public function ConsultarTudo($id) 
+    {
+        global $pdo;
+        $sql = $pdo->prepare('SELECT * FROM USER_REGISTER WHERE ID = :id');
+         $sql->bindValue(':id', $id);
+         $sql->execute();
+         if ($sql->rowCount() > 0) {
+            $data = $sql->fetch();
+         }
+         return $data;
+    }
+    public function ConsultarTodosTelefones($id)
+    {
+        global $pdo;
+        $sql = $pdo->prepare('SELECT * FROM PHONE WHERE FK_PHONE_USER_ID = :id');
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+        if ($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $data = array();
+        }
+        return $data;
+    }
+    public function AtualizarUmCampo($campo, $valor, $id)
+    {
+        global $pdo;
     }
 }
