@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'global.php';
 require_once CONNECT;
+require_once CL_USER;
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" data-bs-theme="dark">
@@ -30,7 +31,7 @@ require_once CONNECT;
 			    <label class="form-label" for="senha">Senha</label>
 			    <input type="password" class="form-control" id="senha" name="senha" placeholder="Insira sua senha aqui" required>
 			</div>
-			<p><a href="" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-">Esqueci minha senha</a></p>
+			<p><a href="/alterar/senha.php" class="link-danger link-offset-2 link-underline-opacity-25 link-underline-opacity-100-">Esqueci minha senha</a></p>
 			<p><a href="/cadastro" class="link-success link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Criar minha conta</a></p>
 			<button type="submit" class="btn btn-light" value="Login" name="login">Login</button>
 		    </form>

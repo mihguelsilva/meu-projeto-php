@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'global.php';
 require_once CONNECT;
 require_once CL_USER;
+$USER = new Usuario();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" data-bs-theme="dark">
@@ -15,8 +16,9 @@ require_once CL_USER;
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
     <body>
-	<header class="container-fluid p-5 bg-secondary text-center">
-	    <h1>Registrando Usuários</h1>
+	<header class="container-fluid p-3 bg-secondary text-center">
+	    <h1 class="display-1">Mihgara</h1>
+	    <h2>Registrando Usuários</h2>
 	</header>
 	<section class='container p-5 mx-auto'>
 	    <div class="row">
@@ -112,6 +114,11 @@ require_once CL_USER;
     </body>
 </html>
 <?php
+if (isset($_FILES['foto-perfil']) && !empty($_FILES['foto-perfil'])) {
+    $foto = $_FILES['foto-perfil'];
+} else {
+    $foto = null;
+}
 if (isset($_POST['registrar'])) {
     $REG_NOME = addslashes($_POST['nome']);
     $REG_EMAIL = addslashes($_POST['email']);
@@ -147,6 +154,7 @@ if (isset($_POST['registrar'])) {
     } else {
 	$REG_CELULAR = array();
     }
+    
     // header('location: /login');
-}
+    }
 ?>
