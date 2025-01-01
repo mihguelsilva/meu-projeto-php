@@ -1,4 +1,4 @@
-* Meu projeto em PHP
+# Meu projeto em PHP
 
 Este é um projeto onde quero demonstrar minhas habilidades com a pilha *LAMP* (Linux, Apache2, MySQL/MariaDB e PHP), realizando CRUD, criando interfaces, classes e entre as demais operações em PHP.
 
