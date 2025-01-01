@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'global.php';
 require_once CONNECT;
 require_once CL_USER;
+$USER = new Usuario();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" data-bs-theme="dark">
@@ -44,6 +45,17 @@ require_once CL_USER;
 if(isset($_POST['login'])) {
     $LOGIN_USER = addslashes($_POST['usuario']);
     $LOGIN_PASS = addslashes($_POST['senha']);
-    // header('location:/login');
+    if ($USER->login($LOGIN_USER, $LOGIN_PASS)) {
+		echo '<script>window.location.href = \'/\';</script>';
+	} else {
+		echo '<script>
+			Swal.fire({
+  			icon: "error",
+  			title: "Login inválido",
+  			text: "As credenciais fornecidas são inválidas!",
+  			footer: \'<a href="/cadastro">Deseja cadastrar sua conta?</a>\'
+		});
+		</script>';
+	}
 }
 ?>
