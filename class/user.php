@@ -35,7 +35,7 @@ class Usuario
             }
             if ($foto != NULL) {
                 if ($foto['type'] == 'image/jpeg' || $foto['type'] == 'image/png') {
-                    $fotoNome = md5(rand(0,99999).time().".jpg");
+                    $fotoNome = md5(rand(0, 99999) . time() . ".jpg");
                     move_uploaded_file($foto['tmp_name'], $ID_DIR . DIRECTORY_SEPARATOR . $fotoNome);
                     $sql = $pdo->prepare('UPDATE USER_REGISTER SET PHOTO = :foto WHERE ID = :id');
                     $sql->bindValue(':foto', $fotoNome);
@@ -76,16 +76,16 @@ class Usuario
             return false;
         }
     }
-    public function ConsultarTudo($id) 
+    public function ConsultarTudo($id)
     {
         global $pdo;
         $sql = $pdo->prepare('SELECT * FROM USER_REGISTER WHERE ID = :id');
-         $sql->bindValue(':id', $id);
-         $sql->execute();
-         if ($sql->rowCount() > 0) {
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+        if ($sql->rowCount() > 0) {
             $data = $sql->fetch();
-         }
-         return $data;
+        }
+        return $data;
     }
     public function ConsultarTodosTelefones($id)
     {
@@ -100,8 +100,22 @@ class Usuario
         }
         return $data;
     }
-    public function AtualizarUmCampo($campo, $valor, $id)
+    public function AtualizarUmCampo($bd, $campo, $valor, $id, $campo_id)
     {
         global $pdo;
+        if ($campo == 'PHOTO') {
+            if ($valor['type'] == 'image/jpeg' || $valor['type'] == 'image/png') {
+                $PERFIL = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'perfil';
+                $ID_DIR = $PERFIL . DIRECTORY_SEPARATOR . $id;
+                $dado = md5(rand(0, 99999) . time() . ".jpg");
+                move_uploaded_file($valor['tmp_name'], $ID_DIR . DIRECTORY_SEPARATOR . $dado);
+            }
+        } else {
+            $dado = $valor;
+        }
+        $sql = $pdo->prepare('UPDATE ' . $bd . ' SET ' . $campo . ' = :campo WHERE ' . $campo_id . ' = :id');
+        $sql->bindValue(':campo', $dado);
+        $sql->bindValue(':id', $id);
+        $sql->execute();
     }
 }

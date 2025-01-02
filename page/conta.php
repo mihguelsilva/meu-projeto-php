@@ -30,67 +30,75 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
         <div class="row">
             <div class="col-sm-12 col-xl-10 mx-auto">
                 <div class="mt-3 overflow-auto">
-                <h2 class="mb-3">Dados Pessoais</h2>
+                    <h2 class="mb-3">Dados Pessoais</h2>
                     <table class="table table-dark table-striped">
                         <tr>
-                        <th class="col">Foto de Perfil</th>
-                        <?php
-                        if ($dados['PHOTO'] == NULL) {
-                            echo '<td class="col"><img class="img-fluid img-thumbnail" src="/img/no-image.jpg" width="120px"></td>' ;
-                        } else {
-                            echo '<td class="col"><img class="img-fluid img-thumbnail" src="/img/perfil/'.$dados['ID'].DIRECTORY_SEPARATOR.$dados['PHOTO'].'" width="120px"></td>';
-                        }
-                        ?>
+                            <th class="col">Foto de Perfil</th>
+                            <?php
+                            if ($dados['PHOTO'] == NULL) { ?>
+                                <td class="col"><img class="img-fluid img-thumbnail" src="/img/no-image.jpg" width="120px">
+                                    <form method='POST' class='was-validated' enctype='multipart/form-data' action="/alterar/usuario.php">
+                                        <div class="input-group">
+                                            <input type="file" class="form-control" id="perfil" aria-describedby="perfil" aria-label="Upload" name="perfil" required>
+                                            <button class="btn btn-outline-secondary" type="submit" id="botao-perfil" name="action" value="botao-perfil">Button</button>
+                                        </div>
+                                    </form>
+                                </td>
+                            <?php
+                            } else {
+                                echo '<td class="col"><img class="img-fluid img-thumbnail" src="/img/perfil/' . $dados['ID'] . DIRECTORY_SEPARATOR . $dados['PHOTO'] . '" width="120px"></td>';
+                            }
+                            ?>
                         </tr>
                         <tr>
                             <th class="col">Nome</th>
-                            <td class="col"><?php echo $dados['NAME'];?></td>
+                            <td class="col"><?php echo $dados['NAME']; ?></td>
                         </tr>
                         <tr>
                             <th class="col">Email</th>
-                            <td class="col"><?php echo $dados['EMAIL']?></td>
+                            <td class="col"><?php echo $dados['EMAIL'] ?></td>
                         </tr>
                     </table>
                 </div>
                 <div class="mt-5">
-                <h2 class="mb-3">Dados de Acesso</h2>
+                    <h2 class="mb-3">Dados de Acesso</h2>
                     <table class="table table-dark table-striped">
                         <tr>
                             <th class="col">Usuário</th>
-                            <td class="col"><?php echo $dados['USERNAME']?></td>
+                            <td class="col"><?php echo $dados['USERNAME'] ?></td>
                         </tr>
                         <tr>
                             <th class="col">Senha</th>
-                            <td class="col"><?php echo"**************" ?></td>
+                            <td class="col"><?php echo "**************" ?></td>
                         </tr>
                     </table>
                 </div>
                 <div class="mt-5">
-                <h2 class="mb-3">Endereço</h2>
+                    <h2 class="mb-3">Endereço</h2>
                     <table class="table table-dark table-striped">
                         <tr>
                             <th class="col">Rua</th>
-                            <td class="col"><?php echo $dados['STREET']?></td>
+                            <td class="col"><?php echo $dados['STREET'] ?></td>
                         </tr>
                         <tr>
                             <th class="col">Número</th>
-                            <td class="col"><?php echo $dados['NUMBER']?></td>
+                            <td class="col"><?php echo $dados['NUMBER'] ?></td>
                         </tr>
                         <tr>
                             <th class="col">Bairro</th>
-                            <td class="col"><?php echo $dados['NEIGHBORHOOD']?></td>
+                            <td class="col"><?php echo $dados['NEIGHBORHOOD'] ?></td>
                         </tr>
                         <tr>
                             <th class="col">Cidade</th>
-                            <td class="col"><?php echo $dados['CITY']?></td>
+                            <td class="col"><?php echo $dados['CITY'] ?></td>
                         </tr>
                         <tr>
                             <th class="col">Estado</th>
-                            <td class="col"><?php echo $dados['STATE']?></td>
+                            <td class="col"><?php echo $dados['STATE'] ?></td>
                         </tr>
                         <tr>
                             <th class="col">CEP</th>
-                            <td class="col"><?php echo $dados['ZIP_CODE']?></td>
+                            <td class="col"><?php echo $dados['ZIP_CODE'] ?></td>
                         </tr>
                     </table>
                 </div>
@@ -103,7 +111,7 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
                     echo '<th class="col">Residencial</th><th class="col">Comercial</th><th class="col">Celular</th>';
                     for ($a = 0; $a < count($telefones); $a++) {
                         echo '<tr>';
-                        foreach($telefones[$a] as $chave => $telefone) {
+                        foreach ($telefones[$a] as $chave => $telefone) {
                             if ($chave == 'ID_PHONE') $TEL_ID = $telefone;
                             if ($chave != 'FK_PHONE_USER_ID' && $chave != 'ID_PHONE') {
                                 if ($telefone == NULL) {
@@ -111,7 +119,7 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
                                 } else {
                                     echo '<td class="col pe-auto telefone">' . $telefone . ' <button class="btn btn-sm btn-outline-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
   <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
-</svg></button> <a href="?id='.$TEL_ID.'&type='.$chave.'"><button type="button" class="btn btn-sm btn-outline-danger" aria-label="Close">X</button></a></td>';
+</svg></button> <a href="?id=' . $TEL_ID . '&type=' . $chave . '"><button type="button" class="btn btn-sm btn-outline-danger" aria-label="Close">X</button></a></td>';
                                 }
                             }
                         }
@@ -126,4 +134,10 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
         </div>
     </section>
 </body>
+
 </html>
+<?php
+if (isset($_POST['action'])) {
+    print_r($_POST);
+}
+?>
