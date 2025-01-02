@@ -97,7 +97,7 @@ class Usuario
         }
         return $data;
     }
-    public function AtualizarUmCampo($bd, $campo, $valor, $id, $campo_id)
+    public function atualizarUmCampo($bd, $campo, $valor, $id, $campo_id)
     {
         global $pdo;
         if ($campo == 'PHOTO') {
