@@ -116,4 +116,61 @@ class Usuario
         $sql->bindValue(':id', $id);
         $sql->execute();
     }
+    public function atualizarAcesso($usuario, $senha, $id)
+    {
+        global $pdo;
+        $senha = md5($senha);
+        $sql = $pdo->prepare('UPDATE USER_REGISTER SET USERNAME = :username, PASS = :senha WHERE ID = :id');
+        $sql->bindValue(':username', $usuario);
+        $sql->bindValue(':senha', $senha);
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+    }
+    public function atualizarPessoais($nome, $email, $cpf_cnpj, $genero, $id)
+    {
+        global $pdo;
+        $sql = $pdo->prepare('UPDATE USER_REGISTER SET NAME = :nome, EMAIL = :email, SSN_EIN = :cpf_cnpj, GENDER = :genero WHERE ID = :id');
+        $sql->bindValue('nome', $nome);
+        $sql->bindValue(':email', $email);
+        $sql->bindValue(':cpf_cnpj', $cpf_cnpj);
+        $sql->bindValue(':genero', $genero);
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+    }
+    public function atualizarEndereco($cep, $numero, $rua, $bairro, $cidade, $estado, $id) {
+        global $pdo;
+        $sql = $pdo->prepare('UPDATE USER_REGISTER SET ZIP_CODE = :cep, NUMBER = :numero, STREET = :rua, NEIGHBORHOOD = :bairro, CITY = :cidade, STATE = :estado WHERE ID = :id');
+        $sql->bindValue(':cep', $cep);
+        $sql->bindValue(':numero', $numero);
+        $sql->bindValue(':rua', $rua);
+        $sql->bindValue(':bairro', $bairro);
+        $sql->bindValue(':cidade', $cidade);
+        $sql->bindValue(':estado', $estado);
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+    }
+    public function desativarConta($id) {
+        global $pdo;
+        // $sql = $pdo->prepare('UPDATE USER_REGISTER SET ACTIVE = :desativar WHERE ID = :id');
+        // $sql->bindValue(':desativar', false);
+        // $sql->bindValue(':id', $id);
+        // $sql->execute();
+    }
+    public function ativarConta($email_cpf_cnpj) {
+        global $pdo;
+        // $sql = $pdo->prepare('SELECT ID FROM USER_REGISTER WHERE EMAIL = :email OR SSN_EIN = :cpf_cnpj');
+        // $sql->bindValue(':email', $email_cpf_cnpj);
+        // $sql->bindValue(':cpf_cnpj', $email_cpf_cnpj);
+        // $sql->execute();
+        // if ($sql->rowCount() > 0) {
+        // $sql = $pdo->prepare('UPDATE USER_REGISTER SET ACTIVE = :ativar WHERE EMAIL = :email OR SSN_EIN = :cpf_cnpj');
+        // $sql->bindValue(':ativar', true);
+        // $sql->bindValue(':email', $email_cpf_cnpj);
+        // $sql->bindValue(':cpf_cnpj', $email_cpf_cnpj);
+        // $sql->execute();
+        // return true;
+        // } else {
+        // return false
+        // }
+    }
 }

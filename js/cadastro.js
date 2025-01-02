@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		})
 		.catch(err => console.log(err))
 	}
-    })
+    });
     let inputCC = document.querySelector('input#cpf-cnpj');
     let buttonCC = document.querySelector('button#cpf-cnpj');
     let cpfCnpj = document.querySelectorAll('li.cpf-cnpj');

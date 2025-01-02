@@ -3,8 +3,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'var' . DIRECTORY
 require_once CONNECT;
 require_once CL_USER;
 if ($_SESSION['NAME']) {
+    $ARRAY = explode(' ', $_SESSION['NAME']);
     $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
-    $ULTIMO = end(explode(' ', $_SESSION['NAME']));
+    $ULTIMO = end($ARRAY);
     $NOME = $PRIMEIRO . ' ' . $ULTIMO;
     if (!isset($_SESSION['PHOTO'])) {
 	if ($_SESSION['GENDER'] == 'mulher-cisgenero' || $_SESSION['GENDER'] == 'mulher-transgenero') {

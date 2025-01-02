@@ -58,11 +58,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		button.setAttribute('name', 'action');
 		button.setAttribute('value', 'atualizar')
 		button.append('Alterar');
+		let cancelar = document.createElement('a');
+		cancelar.setAttribute('href', '/page/conta.php');
+		let buttonCancelar = document.createElement('button');
+		buttonCancelar.setAttribute('class', 'btn btn-outline-danger');
+		buttonCancelar.setAttribute('type', 'button');
+		buttonCancelar.append('Calcelar');
+		cancelar.append(buttonCancelar);
 		getForm.append(input_id);
 		getForm.append(input_name);
 		getForm.append(input_fld);
 		getForm.append(input_ctt);
 		getForm.append(button);
+		getForm.append(cancelar);
 		parent.append(getForm);
 	    }
 	});
@@ -149,6 +157,39 @@ document.addEventListener('DOMContentLoaded', () => {
 	    divMensagem.innerText = 'senhas coincidem';
 	}
     }
+    let endereco = document.querySelector('button#alterar');
+    let cep = document.querySelector('input#cep');
+    let rua = document.querySelector('input#rua');
+    let bairro = document.querySelector('input#bairro');
+    let cidade = document.querySelector('input#cidade');
+    let estado = document.querySelector('input#estado');
+    let divCep = document.querySelector('div#mensagem-cep');
+    cep.addEventListener('keyup', (e) => {
+	let data = e.target.value;
+	if (data.match(/^(\d+){8}$/)) {
+	    divCep.removeAttribute('class');
+	    divCep.setAttribute('class', 'valid-feedback');
+	    divCep.innerText = 'CEP preenchido corretamente!';
+	    alterar.removeAttribute('disabled');
+	    if (data.length == 8) cepApi();
+	} else {
+	    divCep.removeAttribute('class');
+	    divCep.setAttribute('class', 'invalid-feedback');
+	    divCep.innerText = 'Você precisa preencher os 8 números do CEP!';
+	    endereco.setAttribute('disabled', 'true');
+	}
+	function cepApi() {
+	    fetch('https://viacep.com.br/ws/' + data + '/json/')
+		.then(response => response.json())
+		.then(json => {
+		    rua.value = json.logradouro
+		    bairro.value = json.bairro
+		    cidade.value = json.localidade
+		    estado.value = json.uf
+		})
+		.catch(err => console.log(err))
+	}
+    });
 });
 
 function verificarTelefone(e) {

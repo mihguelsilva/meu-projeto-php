@@ -7,8 +7,9 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME']) && !isset($_SESSION[
     exit();
 }
 if ($_SESSION['NAME']) {
+    $ARRAY = explode(' ', $_SESSION['NAME']);
     $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
-    $ULTIMO = end(explode(' ', $_SESSION['NAME']));
+    $ULTIMO = end($ARRAY);
     $NOME = $PRIMEIRO . ' ' . $ULTIMO;
     if (!isset($_SESSION['PHOTO'])) {
 	if ($_SESSION['GENDER'] == 'mulher-cisgenero' || $_SESSION['GENDER'] == 'mulher-transgenero') {
@@ -116,14 +117,14 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 			<button class="btn btn-outline-light" data-bs-toggle="collapse" data-bs-target="#editarPessoais" aria-expanded="false" aria-controls="collapseExample">Editar</button>
 			<div class="collapse" id="editarPessoais">
 			    <div class="card card-body">
-				<form method="POST" class="was-validated" action="alterar/usuario.php">
+				<form method="POST" class="was-validated" action="/alterar/usuario.php">
 				    <div class="mb-3">
 					<label class="form-label" for="nome">Nome</label>
-					<input type="text" class="form-control" id="nome" name="nome" placeholder="Insira seu nome completo" required>
+					<input type="text" class="form-control" id="nome" name="nome" placeholder="Insira seu nome completo" autocomplete="off" required>
 				    </div>
 				    <div class="mb-3">
 					<label class="form-label" for="email">Email</label>
-					<input type="email" class="form-control" id="email" name="email" placeholder="usuario@dominio" required>
+					<input type="email" class="form-control" id="email" name="email" placeholder="usuario@dominio" autocomplete="off" required>
 				    </div>
 				    <div class="input-group mb-3 mt-4">
 					<button type="button" class="btn btn-primary dropdown-toggle" id="cpf-cnpj" data-bs-toggle="dropdown">CPF</button>
@@ -133,7 +134,17 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 					</ul>
 					<input type="text" class="form-control" id="cpf-cnpj" name="cpf-cnpj" placeholder="Insira seu CPF" maxlength="14" required autocomplete="off">
 				    </div>
-				    <button class="btn btn-outline-primary" type="submit" id="alterar" name="alterar" value="pessoais">Alterar Dados Pessoais</button>
+				    <div class="mb-3">
+					<label class="form-label" for="genero">Gênero</label>
+					<select class="form-control" id="genero" name="genero" required>
+					    <option value="homem-cisgenero">Homem Cisgênero</option>
+					    <option value="mulher-cisgenero">Mulher Cisgênero</option>
+					    <option value="homem-transgenero">Homem Trangênero</option>
+					    <option value="mulher-transgenero">Mulher Trangênero</option>
+					    <option value="nao-binarie">Não Binárie</option>
+					</select>
+				    </div>
+				    <button class="btn btn-outline-primary" type="submit" id="alterar" name="action" value="pessoais">Alterar Dados Pessoais</button>
 				</form>
 			    </div>
 			</div>
@@ -153,22 +164,22 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 			<button class="btn btn-outline-light" data-bs-toggle="collapse" data-bs-target="#editarAcesso" aria-expanded="false" aria-controls="collapseExample">Editar</button>
 			<div class="collapse" id="editarAcesso">
 			    <div class="card card-body">
-				<form method="POST" class="was-validated" action="alterar/usuario.php">
+				<form method="POST" class="was-validated" action="/alterar/usuario.php">
 				    <div class="mb-3">
 					<label class="form-label" for="usuario">Nome do Usuario</label>
-					<input type="text" class="form-control" id="usuario" name="usuario" maxlength="20" placeholder="user.name" required>
+					<input type="text" class="form-control" id="usuario" name="usuario" maxlength="20" placeholder="user.name" autocomplete="off" required>
 				    </div>
 				    <div class="mb-3 has-validation">
 					<label class="form-label" for="senha">Senha</label>
-					<input type="password" class="form-control is-invalid" id="senha" name="senha" placeholder="Insira sua senha" maxlength="30" required>
+					<input type="password" class="form-control is-invalid" id="senha" name="senha" placeholder="Insira sua senha" maxlength="30" autocomplete="off" required>
 
 				    </div>
 				    <div class="mb-3">
 					<label class="form-label" for="repetir-senha">Repetir Senha</label>
-					<input type="password" class="form-control is-invalid" id="repetir-senha" name="repetir-senha" placeholder="Repita sua senha" maxlength="30" required>
+					<input type="password" class="form-control is-invalid" id="repetir-senha" name="repetir-senha" placeholder="Repita sua senha" maxlength="30" autocomplete="off" required>
 					<div class="invalid-feedback" id="mensagem">Senhas não coindicem</div>
 				    </div>
-				    <button class="btn btn-outline-primary" type="submit" name="alterar" value="acesso" id="alterar-acesso">Alterar Dados de Acesso</button>
+				    <button class="btn btn-outline-primary" type="submit" name="action" value="acesso" id="alterar-acesso">Alterar Dados de Acesso</button>
 				</form>
 			    </div>
 			</div>
@@ -205,13 +216,18 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 			<div class="collapse" id="editarEndereco">
 			    <div class="card card-body">
 				<form method="POST" action="/alterar/usuario.php" class="was-validated">
-				    <div class="mb-3">
+				    <div class="mb-3 has-validation">
 					<label class="form-label" for="cep">CEP</label>
-					<input type="text" class="form-control" id="cep" name="cep" maxlength="8" placeholder="00000000" required>
-				    </div>
+					<input type="text" class="form-control is-invalid" id="cep" name="cep" maxlength="8" placeholder="00000000" autocomplete="off" required>
+					<div class="invalid-feedback" id="mensagem-cep">Você precisa preencher os 8 números do CEP!</div>
+					</div>
 				    <div class="mb-3">
 					<label class="form-label" for="numero">Numero</label>
-					<input type="text" class="form-control" id="numero" name="numero" maxlength="10" placeholder="20" required>
+					<input type="text" class="form-control" id="numero" name="numero" maxlength="10" placeholder="20" autocomplete="off" required>
+				    </div>
+				    <div class="mb-3">
+					<label class="form-label" for="rua">Rua</label>
+					<input type="text" class="form-control" id="rua" name="rua" readonly required>
 				    </div>
 				    <div class="mb-3">
 					<label class="form-label" for="bairro">Bairro</label>
@@ -225,7 +241,7 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 					<label class="form-label" for="estado">Estado</label>
 					<input type="text" class="form-control" id="estado" name="estado" readonly required>
 				    </div>
-				    <button class="btn btn-outline-primary" type="submit" id="alterar" name="alterar" value="endereco">Alterar Endereço</button>
+				    <button class="btn btn-outline-primary" type="submit" id="alterar" name="action" value="endereco">Alterar Endereço</button>
 				</form>
 			    </div>
 			</div>

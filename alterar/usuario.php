@@ -27,6 +27,30 @@ if (isset($_FILES['perfil'])) {
             echo '<script>window.location.href = "/page/conta.php"</script>';
         }
     }
+} else if (isset($_POST['action'])) {
+    if ($_POST['action'] == 'acesso') {
+        $USUARIO = addslashes($_POST['usuario']);
+        $SENHA = addslashes($_POST['senha']);
+        $USER->atualizarAcesso($USUARIO, $SENHA, $_SESSION['LOGIN']);
+        header('Location:/page/conta.php');
+    } else if ($_POST['action'] == 'pessoais') {
+        $NOME = addslashes($_POST['nome']);
+        $EMAIL = addslashes($_POST['email']);
+        $CPF_CNPJ = addslashes($_POST['cpf-cnpj']);
+        $CPF_CNPJ = preg_replace('/(\.){0,}(\-){0,}(\/){0,}/i', "", $CPF_CNPJ);
+        $GENERO = addslashes($_POST['genero']);
+        $USER->atualizarPessoais($NOME, $EMAIL, $CPF_CNPJ, $GENERO, $_SESSION['LOGIN']);
+        header('Location: /page/conta.php');
+    } else if ($_POST['action'] == 'endereco') {
+        $CEP = addslashes($_POST['cep']);
+        $NUMERO = addslashes($_POST['numero']);
+        $RUA = addslashes($_POST['rua']);
+        $BAIRRO = addslashes($_POST['bairro']);
+        $CIDADE = addslashes($_POST['cidade']);
+        $ESTADO = addslashes($_POST['estado']);
+        $USER->atualizarEndereco($CEP, $NUMERO, $RUA, $BAIRRO, $CIDADE, $ESTADO, $_SESSION['LOGIN']);
+        header('Location: /page/conta.php');
+    }
 } else {
     header('Location: /');
 }
