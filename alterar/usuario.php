@@ -25,9 +25,6 @@ if (isset($_FILES['perfil'])) {
             $USER->AtualizarUmCampo('PHONE', $_GET['type'], NULL, $_GET['id'], 'ID_PHONE');
             echo '<script>window.location.href = "/page/conta.php"</script>';
         }
-        echo '<pre>';
-        print_r($_GET);
-        echo '</pre>';
     }
 } else {
     header('Location: /');
