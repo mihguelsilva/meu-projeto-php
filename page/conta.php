@@ -16,6 +16,7 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
     <meta charset='utf-8'>
     <title>Minha Conta</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/js/conta.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -183,11 +184,11 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
                             if ($chave == 'ID_PHONE') $TEL_ID = $telefone;
                             if ($chave != 'FK_PHONE_USER_ID' && $chave != 'ID_PHONE') {
                                 if ($telefone == NULL) {
-                                    echo '<td class="col">Não definido <button class="btn btn-sm btn-outline-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                    echo '<td class="col pe-auto telefone" id="'.$TEL_ID.'" name="'.$chave.'">Não definido <button class="btn btn-sm btn-outline-light alterar-telefone"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
   <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
 </svg></button></td> ';
                                 } else {
-                                    echo '<td class="col pe-auto telefone">' . $telefone . ' <button class="btn btn-sm btn-outline-light"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+                                    echo '<td class="col pe-auto telefone" " id="'.$TEL_ID.'" name="'.$chave.'">' . $telefone . ' <button class="btn btn-sm btn-outline-light alterar-telefone"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
   <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z"/>
 </svg></button> <a href="/alterar/usuario.php?id=' . $TEL_ID . '&type=' . $chave . '&action=deletar&fld=telefone"><button type="button" class="btn btn-sm btn-outline-danger" aria-label="Close">X</button></a></td>';
                                 }
