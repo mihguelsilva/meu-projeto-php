@@ -4,6 +4,7 @@ require_once CONNECT;
 require_once CL_USER;
 if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME']) && !isset($_SESSION['PHOTO'])) {
     header('location: /login');
+    exit();
 }
 $USER = new Usuario();
 $dados = $USER->ConsultarTudo($_SESSION['LOGIN']);
@@ -61,11 +62,11 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
                         </tr>
 			<tr>
 			    <th class="col" id="td-cpf-cnpj"></th>
-			    <td class="col" id="cpf-cnpj"><?php echo $dados['SSN_EIN']; ?></td>
+			    <td class="col" id="cpf-cnpj"><?php echo $dados['SSN_EIN'];?></td>
 			</tr>
                         <tr>
                             <th class="col">Email</th>
-                            <td class="col"><?php echo $dados['EMAIL'] ?></td>
+                            <td class="col"><?php echo $dados['EMAIL']; ?></td>
                         </tr>
                     </table>
 		    <button class="btn btn-outline-light" data-bs-toggle="collapse" data-bs-target="#editarPessoais" aria-expanded="false" aria-controls="collapseExample">Editar</button>

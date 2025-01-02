@@ -2,8 +2,9 @@
 require_once $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'global.php';
 require_once CONNECT;
 require_once CL_USER;
-if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME']) && isset($_SESSION['PHOTO'])) {
+if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
     header('Location: /');
+    exit();
 }
 $USER = new Usuario();
 ?>

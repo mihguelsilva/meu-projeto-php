@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let tdCpfCnpj = document.querySelector('td#td-cpf-cnpj');
+    let thCpfCnpj = document.querySelector('th#td-cpf-cnpj');
     let cpfCnpj = document.querySelector('td#cpf-cnpj');
+    if (cpfCnpj.innerText.length == 11) {
+	thCpfCnpj.innerText = 'CPF';
+	let v = cpfCnpj.innerText
+	newCpfCnpj = v.slice(0,3) + '.' + v.slice(3,6) + '.' + v.slice(6,9) + '-' + v.slice(9,11);
+	cpfCnpj.innerText = newCpfCnpj;
+    } else {
+	thCpfCnpj.innerText = 'CNPJ';
+    }
     let altTel = document.querySelectorAll('button.alterar-telefone');
     altTel.forEach((element, index) => {
 	element.addEventListener('click', (e) => {
