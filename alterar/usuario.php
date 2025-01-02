@@ -6,18 +6,30 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME']) && !isset($_SESSION[
     header('location: /login');
 }
 $USER = new Usuario();
-if ($_FILES['perfil']) {
+if (isset($_FILES['perfil'])) {
     $USER->AtualizarUmCampo('USER_REGISTER', 'PHOTO', $_FILES['perfil'], $_SESSION['LOGIN'], 'ID');
     echo '<script>window.location.href = "/page/conta.php"</script>';
-}
-if (isset($_GET['action'])) {
-    if ($action == 'atualizar') {
-        if ($_GET['type'] == 'CELL' || $_GET['type'] == 'BUSINESS' || $_GET['type'] == 'HOME') {
-            $USER->AtualizarUmCampo('PHONE', $_GET['type'], $_GET['new'], $_SESSION['LOGIN'], 'ID_PHONE');
+} else if (isset($_GET['action'])) {
+    if ($_GET['action'] == 'atualizar') {
+        if ($_GET['fld'] == 'telefone') {
+            $USER->AtualizarUmCampo('PHONE', $_GET['type'], $_GET['ctt'], $_GET['id'], 'ID_PHONE');
             echo '<script>window.location.href = "/page/conta.php"</script>';
         }
-    } else if ($action == 'deletar') {
-        // asdf
+    } else if ($_GET['action'] == 'deletar') {
+        if ($_GET['fld'] == 'foto') {
+            $FOTO = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.'perfil'.DIRECTORY_SEPARATOR.$_SESSION['LOGIN'].DIRECTORY_SEPARATOR.$_GET['ctt'];
+            unlink($FOTO);
+            $USER->AtualizarUmCampo('USER_REGISTER', 'PHOTO', NULL, $_SESSION['LOGIN'], 'ID');
+            echo '<script>window.location.href = "/page/conta.php"</script>';
+        } else if ($_GET['fld'] == 'telefone') {
+            $USER->AtualizarUmCampo('PHONE', $_GET['type'], NULL, $_GET['id'], 'ID_PHONE');
+            echo '<script>window.location.href = "/page/conta.php"</script>';
+        }
+        echo '<pre>';
+        print_r($_GET);
+        echo '</pre>';
     }
+} else {
+    header('Location: /');
 }
 ?>
