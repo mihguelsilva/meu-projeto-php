@@ -26,6 +26,16 @@ $USER = new Usuario();
 		<h1 class="display-1">Mihgara</h1>
 		<h2>Registrando Usuários</h2>
 	</header>
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark bg-gradient border">
+	    <div class="container-fluid">
+		<a class="navbar-brand" href="/">Logo</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+		    <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="mynavbar">
+		</div>
+	    </div>
+	</nav>
 	<section class='container mx-auto mt-5 mb-5'>
 		<div class="row">
 			<div class="col-xl-6 col-md-10 col-sm-12 mx-auto">

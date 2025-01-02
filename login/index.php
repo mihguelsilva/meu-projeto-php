@@ -23,6 +23,16 @@ $USER = new Usuario();
 	    <h1 class="display-1">Mihgara</h1>
 	    <h2>Acesso</h2>
 	</header>
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark bg-gradient border">
+	    <div class="container-fluid">
+		<a class="navbar-brand" href="/">Logo</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+		    <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="mynavbar">
+		</div>
+	    </div>
+	</nav>
 	<section class="container mt-3 mb-3">
 	    <div class="row">
 		<div class="col-sm-12 col-xl-6 border border-light mx-auto p-5">
@@ -50,9 +60,9 @@ if(isset($_POST['login'])) {
     $LOGIN_USER = addslashes($_POST['usuario']);
     $LOGIN_PASS = addslashes($_POST['senha']);
     if ($USER->login($LOGIN_USER, $LOGIN_PASS)) {
-		echo '<script>window.location.href = \'/\';</script>';
-	} else {
-		echo '<script>
+	echo '<script>window.location.href = \'/\';</script>';
+    } else {
+	echo '<script>
 			Swal.fire({
   			icon: "error",
   			title: "Login inválido",
@@ -60,6 +70,6 @@ if(isset($_POST['login'])) {
   			footer: \'<a href="/cadastro">Deseja cadastrar sua conta?</a>\'
 		});
 		</script>';
-	}
+    }
 }
 ?>
