@@ -19,6 +19,7 @@ if (isset($_FILES['perfil'])) {
         if ($_GET['fld'] == 'foto') {
             $FOTO = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.'perfil'.DIRECTORY_SEPARATOR.$_SESSION['LOGIN'].DIRECTORY_SEPARATOR.$_GET['ctt'];
             unlink($FOTO);
+            $_SESSION['PHOTO'] = NULL;
             $USER->AtualizarUmCampo('USER_REGISTER', 'PHOTO', NULL, $_SESSION['LOGIN'], 'ID');
             echo '<script>window.location.href = "/page/conta.php"</script>';
         } else if ($_GET['fld'] == 'telefone') {

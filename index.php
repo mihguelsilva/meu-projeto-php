@@ -5,8 +5,6 @@ require_once CL_USER;
 if ($_SESSION['NAME']) {
     $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
     $ULTIMO = end(explode(' ', $_SESSION['NAME']));
-    echo $PRIMEIRO;
-    echo $ULTIMO;
     $NOME = $PRIMEIRO . ' ' . $ULTIMO;
     if (!isset($_SESSION['PHOTO'])) {
 	if ($_SESSION['GENDER'] == 'mulher-cisgenero' || $_SESSION['GENDER'] == 'mulher-transgenero') {
@@ -14,6 +12,8 @@ if ($_SESSION['NAME']) {
 	} else {
 	    $FOTO = '/img/person.png';
 	}
+    } else {
+	$FOTO = '/img/perfil/' . $_SESSION['LOGIN'] . '/' . $_SESSION['PHOTO'];
     }
 }
 ?>
@@ -48,7 +48,7 @@ if ($_SESSION['NAME']) {
 			    <?php
 			    if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			    ?>
-				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><img class="rounded-pill" alt="Avatar Logo" src="<?php echo $FOTO; ?>" width="40px"> <?php echo $NOME; ?></a>
+				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><img class="rounded-pill" alt="Avatar Logo" src="<?php echo $FOTO; ?>" width="40px" width="40px"> <?php echo $NOME; ?></a>
 				<ul class="dropdown-menu">
 				    <li><a class="dropdown-item" href="/page/criar-anuncio.php">Criar anúncio</a></li>
 				    <li><a class="dropdown-item" href="/page/meus-anuncios.php">Meus anúncios</a></li>
@@ -78,5 +78,19 @@ if ($_SESSION['NAME']) {
 		</div>
 	    </div>
 	</nav>
+	<section class="container-fluid mt-3">
+	    <div class="row">
+		<div class="col-xl-3 col-sm-12 mb-3">
+		    <div class="card p-3">
+			<h4 class="card-title">Geladeira</h4>
+			<img class="card-img-top" src="" alt="Card image" style="120px">
+			<div class="card-body">
+			    <p class="card-text">Geladeira...</p>
+			    <a href="/page/anuncio.php" class="btn btn-primary">Ver anúncio</a>
+			</div>
+		    </div>
+		</div>
+	    </div>
+	</section>
     </body>
 </html>

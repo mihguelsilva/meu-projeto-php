@@ -105,6 +105,7 @@ class Usuario
                 $PERFIL = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'perfil';
                 $ID_DIR = $PERFIL . DIRECTORY_SEPARATOR . $id;
                 $dado = md5(rand(0, 99999) . time() . ".jpg");
+                $_SESSION['PHOTO'] = $dado;
                 move_uploaded_file($valor['tmp_name'], $ID_DIR . DIRECTORY_SEPARATOR . $dado);
             }
         } else {

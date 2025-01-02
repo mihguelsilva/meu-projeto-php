@@ -67,8 +67,8 @@ if(isset($_POST['login'])) {
   			icon: "error",
   			title: "Login inválido",
   			text: "As credenciais fornecidas são inválidas!",
-  			footer: \'<a href="/cadastro">Deseja cadastrar sua conta?</a>\'
 		});
+document.body.addEventListener("click", () => window.location.href = "/login");
 		</script>';
     }
 }

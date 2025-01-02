@@ -9,8 +9,6 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME']) && !isset($_SESSION[
 if ($_SESSION['NAME']) {
     $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
     $ULTIMO = end(explode(' ', $_SESSION['NAME']));
-    echo $PRIMEIRO;
-    echo $ULTIMO;
     $NOME = $PRIMEIRO . ' ' . $ULTIMO;
     if (!isset($_SESSION['PHOTO'])) {
 	if ($_SESSION['GENDER'] == 'mulher-cisgenero' || $_SESSION['GENDER'] == 'mulher-transgenero') {
@@ -18,8 +16,11 @@ if ($_SESSION['NAME']) {
 	} else {
 	    $FOTO = '/img/person.png';
 	}
+    } else {
+	$FOTO = '/img/perfil/' . $_SESSION['LOGIN'] . '/' . $_SESSION['PHOTO'];
     }
 }
+$GENERO = ucfirst(explode('-', $_SESSION['GENDER'])[0]) . ' ' . ucfirst(explode('-', $_SESSION['GENDER'])[1]);
 $USER = new Usuario();
 $dados = $USER->ConsultarTudo($_SESSION['LOGIN']);
 $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
@@ -51,7 +52,7 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="navbar-nav me-auto">
 			<li class="nav-item dropdown">
-			    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><img class="rounded-pill" alt="Avatar Logo" src="<?php echo $FOTO; ?>" width="40px"> <?php echo $NOME; ?></a>
+			    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><img class="rounded-pill" alt="Avatar Logo" src="<?php echo $FOTO; ?>" width="40px" height="40px"> <?php echo $NOME; ?></a>
 			    <ul class="dropdown-menu">
 				<li><a class="dropdown-item" href="/page/criar-anuncio.php">Criar anúncio</a></li>
 				<li><a class="dropdown-item" href="/page/meus-anuncios.php">Meus anúncios</a></li>
@@ -102,6 +103,10 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 			    <tr>
 				<th class="col" id="td-cpf-cnpj"></th>
 				<td class="col" id="cpf-cnpj"><?php echo $dados['SSN_EIN'];?></td>
+			    </tr>
+			    <tr>
+				<th class="col">Gênero</th>
+				<td class="col"><?php echo $GENERO; ?></td>
 			    </tr>
                             <tr>
 				<th class="col">Email</th>
