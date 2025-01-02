@@ -189,7 +189,7 @@ if (isset($_POST['registrar'])) {
 		Swal.fire({
   			icon: "error",
   			title: "Cadastro mal sucedido",
-  			text: "O cadastro já existe!",
+  			text: "O cadastro já existe! Verifique se sua conta está desativada.",
 		});
 		</script>';
 	}

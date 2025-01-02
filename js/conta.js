@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let tdCpfCnpj = document.querySelector('td#td-cpf-cnpj');
+    let cpfCnpj = document.querySelector('td#cpf-cnpj');
     let altTel = document.querySelectorAll('button.alterar-telefone');
     altTel.forEach((element, index) => {
 	element.addEventListener('click', (e) => {

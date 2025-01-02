@@ -44,16 +44,12 @@ class Usuario
                 }
             }
             for ($a = 0; $a < count($residencial); $a++) {
-                if ($residencial[$a] == NULL && $comercial[$a] == NULL && $celular[$a] == NULL) {
-                    // não cadastrar nada
-                } else {
-                    $sql = $pdo->prepare('INSERT INTO PHONE (HOME, BUSINESS, CELL, FK_PHONE_USER_ID) VALUES(:residencial, :comercial, :celular, :fk_id)');
-                    $sql->bindValue(':residencial', $residencial[$a]);
-                    $sql->bindValue(':comercial', $comercial[$a]);
-                    $sql->bindValue(':celular', $celular[$a]);
-                    $sql->bindValue(':fk_id', $id_user);
-                    $sql->execute();
-                }
+                $sql = $pdo->prepare('INSERT INTO PHONE (HOME, BUSINESS, CELL, FK_PHONE_USER_ID) VALUES(:residencial, :comercial, :celular, :fk_id)');
+                $sql->bindValue(':residencial', $residencial[$a]);
+                $sql->bindValue(':comercial', $comercial[$a]);
+                $sql->bindValue(':celular', $celular[$a]);
+                $sql->bindValue(':fk_id', $id_user);
+                $sql->execute();
             }
             return true;
         }

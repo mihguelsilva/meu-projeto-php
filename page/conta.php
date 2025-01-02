@@ -59,6 +59,10 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
                             <th class="col">Nome</th>
                             <td class="col"><?php echo $dados['NAME']; ?></td>
                         </tr>
+			<tr>
+			    <th class="col" id="td-cpf-cnpj"></th>
+			    <td class="col" id="cpf-cnpj"><?php echo $dados['SSN_EIN']; ?></td>
+			</tr>
                         <tr>
                             <th class="col">Email</th>
                             <td class="col"><?php echo $dados['EMAIL'] ?></td>
