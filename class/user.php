@@ -58,7 +58,7 @@ class Usuario
     {
         global $pdo;
         $senha = md5($senha);
-        $sql = $pdo->prepare('SELECT ID, PHOTO, NAME FROM USER_REGISTER WHERE USERNAME = :username AND PASS = :password');
+        $sql = $pdo->prepare('SELECT ID, PHOTO, NAME, GENDER FROM USER_REGISTER WHERE USERNAME = :username AND PASS = :password');
         $sql->bindValue(':username', $usuario);
         $sql->bindValue(':password', $senha);
         $sql->execute();
@@ -67,6 +67,7 @@ class Usuario
             $_SESSION['LOGIN'] = $data['ID'];
             $_SESSION['NAME'] = $data['NAME'];
             $_SESSION['PHOTO'] = $data['PHOTO'];
+            $_SESSION['GENDER'] = $data['GENDER'];
             return true;
         } else {
             return false;

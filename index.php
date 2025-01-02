@@ -2,6 +2,20 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'global.php';
 require_once CONNECT;
 require_once CL_USER;
+if ($_SESSION['NAME']) {
+    $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
+    $ULTIMO = end(explode(' ', $_SESSION['NAME']));
+    echo $PRIMEIRO;
+    echo $ULTIMO;
+    $NOME = $PRIMEIRO . ' ' . $ULTIMO;
+    if (!isset($_SESSION['PHOTO'])) {
+	if ($_SESSION['GENDER'] == 'mulher-cisgenero' || $_SESSION['GENDER'] == 'mulher-transgenero') {
+	    $FOTO = '/img/female-person.jpg';
+	} else {
+	    $FOTO = '/img/person.png';
+	}
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang='pt-br' data-bs-theme='dark'>
@@ -30,46 +44,35 @@ require_once CL_USER;
 		</button>
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="navbar-nav me-auto">
-			<li class="nav-item">
+			<li class="nav-item dropdown">
 			    <?php
 			    if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
-				echo '<a class="nav-link" href="/page/criar-anuncio.php">Criar anúncio</a>';
-			    } else {
-				echo '<a class="nav-link" href="/login">Criar anúncio</a>';
-			    }
 			    ?>
-			</li>
-			<li class="nav-item">
+				<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><img class="rounded-pill" alt="Avatar Logo" src="<?php echo $FOTO; ?>" width="40px"> <?php echo $NOME; ?></a>
+				<ul class="dropdown-menu">
+				    <li><a class="dropdown-item" href="/page/criar-anuncio.php">Criar anúncio</a></li>
+				    <li><a class="dropdown-item" href="/page/meus-anuncios.php">Meus anúncios</a></li>
+				    <li><a class="dropdown-item" href="/page/conta.php">Minha conta</a></li>
+				    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+				</ul>
 			    <?php
-			    if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
-				echo '<a class="nav-link" href="/page/conta.php">Minha conta</a>';
 			    } else {
-				echo '<a class="nav-link" href="/cadastro">Criar cadastro</a>';
-			    }
 			    ?>
-			</li>
-			<li class="nav-item">
+				<li class="nav-item dropdown">
+				    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Anúncios</a>
+				    <ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="/login">Criar anúncio</a></li>
+					<li><a class="dropdown-item" href="/cadastro">Criar cadastro</a></li>
+					<li><a class="dropdown-item" href="/login">Fazer login</a></li>
+				    </ul>
+				</li>
 			    <?php
-			    if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
-				echo '<a class="nav-link" href="/page/meus-anuncios.php">Meus anúncios</a>';
-			    } else {
-				echo '<a class="nav-link" href="/login">Fazer login</a>';
 			    }
 			    ?>
-			</li>
-			<?php
-			if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
-			?>
-			    <li class="nav-item">
-				<a class="nav-link" href="/logout">Logout</a>
-			    </li>
-			<?php
-			}
-			?>
-
 		    </ul>
 		    <form class="d-flex" method="GET">
-			<input class="form-control me-1" type="text" placeholder="Pesquisar">
+			<input class="form-control me-1" type="text" placeholder="Região" size="10">
+			<input class="form-control me-1" type="text" placeholder="Pesquisar" size="10">
 			<button class="btn btn-primary" type="button">Pesquisar</button>
 		    </form>
 		</div>

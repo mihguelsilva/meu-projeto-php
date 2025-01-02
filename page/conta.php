@@ -6,6 +6,20 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME']) && !isset($_SESSION[
     header('location: /login');
     exit();
 }
+if ($_SESSION['NAME']) {
+    $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
+    $ULTIMO = end(explode(' ', $_SESSION['NAME']));
+    echo $PRIMEIRO;
+    echo $ULTIMO;
+    $NOME = $PRIMEIRO . ' ' . $ULTIMO;
+    if (!isset($_SESSION['PHOTO'])) {
+	if ($_SESSION['GENDER'] == 'mulher-cisgenero' || $_SESSION['GENDER'] == 'mulher-transgenero') {
+	    $FOTO = '/img/female-person.jpg';
+	} else {
+	    $FOTO = '/img/person.png';
+	}
+    }
+}
 $USER = new Usuario();
 $dados = $USER->ConsultarTudo($_SESSION['LOGIN']);
 $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
@@ -36,14 +50,14 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 		</button>
 		<div class="collapse navbar-collapse" id="mynavbar">
 		    <ul class="navbar-nav me-auto">
-			<li class="nav-item">
-			    <a class="nav-link" href="/page/criar-anuncio.php">Criar anúncio</a>
-			</li>
-			<li class="nav-item">
-			    <a class="nav-link" href="/page/meus-anuncios.php">Meus anúncios</a>
-			</li>
-			<li class="nav-item">
-			    <a class="nav-link" href="/logout">Logout</a>
+			<li class="nav-item dropdown">
+			    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><img class="rounded-pill" alt="Avatar Logo" src="<?php echo $FOTO; ?>" width="40px"> <?php echo $NOME; ?></a>
+			    <ul class="dropdown-menu">
+				<li><a class="dropdown-item" href="/page/criar-anuncio.php">Criar anúncio</a></li>
+				<li><a class="dropdown-item" href="/page/meus-anuncios.php">Meus anúncios</a></li>
+				<li><a class="dropdown-item" href="/page/conta.php">Minha conta</a></li>
+				<li><a class="dropdown-item" href="/logout">Logout</a></li>
+			    </ul>
 			</li>
 		    </ul>
 		    <form class="d-flex" method="POST">
