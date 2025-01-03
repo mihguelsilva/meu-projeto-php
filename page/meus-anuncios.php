@@ -39,7 +39,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 	    <div class="row">
 		<div class="col">
 		    <h1 class="display-1">Mihgara</h1>
-	p	    <h2>Meus Anúncios</h2>
+		    <h2>Meus Anúncios</h2>
 		</div>
 	    </div>
 	</header>

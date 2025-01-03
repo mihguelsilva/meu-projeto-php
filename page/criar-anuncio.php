@@ -78,7 +78,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			</div>
 			<div class="has-validation mt-3">
 			    <label class="form-label" for="titulo">Título</label>
-			    <input type="text" maxlength="20" class="form-control" name="titulo" id="titulo" required>
+			    <input type="text" maxlength="20" class="form-control" name="titulo" id="titulo" placeholder="Insira um título breve e direto" required>
 			    <div class="invalid-feedback">Insira seu título</div>
 			</div>
 			<div class="has-validation mt-3">
@@ -95,16 +95,16 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			</div>
 			<div class="has-validation mt-3">
 			    <label class="form-label" for="descricao">Descrição do Anúncio</label>
-			    <textarea class="form-control" name="descricao" id="descricao" maxlength="2000" required></textarea>
+			    <textarea class="form-control" name="descricao" id="descricao" maxlength="2000" placeholder="Descreva o estado do produto, tempo de uso, se está apresentando algum defeito" required></textarea>
 			    <div class="invalid-feedback">Escreva a descrição do seu anúncio</div>
 			</div>
 			<div class="has-validation mt-3">
 			    <label class="form-label" for="valor">Valor do anúncio</label>
-			    <input class="form-control" type="number" step="any" id="valor" name="valor" required placeholder="10">
+			    <input class="form-control" type="number" step="any" id="valor" name="valor" required placeholder="10.00 ou 25.50 ou 50,75">
 			</div>
 			<div class="has-validation mt-3 mb-3">
 			    <label class="form-label" for="ficha-tecnica">Ficha Técnica</label>
-			    <textarea class="form-control" id="ficha-tecnica" name="ficha-tecnica" maxlength="2000" required></textarea>
+			    <textarea class="form-control" id="ficha-tecnica" name="ficha-tecnica" maxlength="2000" placeholder="Marca: marca do produto, Ano: ano de fabricação ou ano que foi comprado, Cor: cor do produto..." required></textarea>
 			    <div class="invalid-feedback">Preencha a ficha técnica</div>
 			</div>
 			<button class="btn btn-outline-light" type="submit" name="action" value="criar-anuncio">Criar Anúncio</button>

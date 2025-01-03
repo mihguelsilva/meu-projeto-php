@@ -1,7 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'global.php';
 require_once CONNECT;
-require_once CL_USER;
+require_once CL_ANNOUNCEMENT;
+$ANUNCIO = new Anuncio();
+$TODOS = $ANUNCIO->verTodosAnuncios();
 if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
     $ARRAY = explode(' ', $_SESSION['NAME']);
     $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
@@ -82,16 +84,43 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 	</nav>
 	<section class="container-fluid mt-3">
 	    <div class="row">
+		<?php
+		if (count($TODOS) > 0) {
+		    foreach($TODOS as $t) {
+			if ($t['QUANTITY'] == NULL) {
+			    $QTD = 0;
+			} else {
+			    $QTD = $t['QUANTITY'];
+			}
+		?>
 		<div class="col-xl-3 col-sm-12 mb-3">
 		    <div class="card p-3">
-			<h4 class="card-title">Geladeira</h4>
-			<img class="card-img-top" src="/img/no-image.jpg" alt="Card image" style="120px">
+			<h4 class="card-title"><?php echo $t['TITLE']; ?></h4>
+			<?php
+			if ($t['PHOTO'] != NULL) {
+			    $AN_PHOTO = '/img/ads/'.$_SESSION['LOGIN'].'/'.$t['PHOTO'];
+			?>
+			    <img class="card-img-top" src="<?php echo $AN_PHOTO; ?>" alt="Card image" style="120px">
+			<?php
+			} else {
+			?>
+			    <img class="card-img-top" src="/img/no-image.jpg" alt="Card image" style="120px">
+			<?php } ?>
 			<div class="card-body">
-			    <p class="card-text">Geladeira...</p>
-			    <a href="/page/anuncio.php" class="btn btn-primary">Ver anúncio</a>
+			    <p class="card-text">
+				<?php echo $QTD; ?> itens<br>
+				R$ <?php echo $t['PAY_VALUE'] ?><br>
+				<b><?php echo $t['STATE'].'/'.$t['CITY']; ?></b><br>
+				<i><?php echo utf8_encode($t['CATEGORY']); ?></i>
+			    </p>
+			    <a href="/page/anuncio.php?id=<?php echo $t['ID_ANNOUNCEMENT']; ?>" class="btn btn-primary">Ver anúncio</a>
 			</div>
 		    </div>
 		</div>
+		<?php
+		}
+		}
+		?>
 	    </div>
 	</section>
     </body>
