@@ -2,11 +2,10 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'global.php';
 require_once CONNECT;
 require_once CL_USER;
-if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME']) && !isset($_SESSION['PHOTO'])) {
+if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME'])) {
     header('location: /login');
     exit();
-}
-if ($_SESSION['NAME']) {
+} else {
     $ARRAY = explode(' ', $_SESSION['NAME']);
     $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
     $ULTIMO = end($ARRAY);
@@ -28,7 +27,6 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br" data-bs-theme="dark">
-
     <head>
 	<meta charset='utf-8'>
 	<title>Minha Conta</title>

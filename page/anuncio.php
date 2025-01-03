@@ -80,19 +80,5 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 		</div>
 	    </div>
 	</nav>
-	<section class="container-fluid mt-3">
-	    <div class="row">
-		<div class="col-xl-3 col-sm-12 mb-3">
-		    <div class="card p-3">
-			<h4 class="card-title">Geladeira</h4>
-			<img class="card-img-top" src="/img/no-image.jpg" alt="Card image" style="120px">
-			<div class="card-body">
-			    <p class="card-text">Geladeira...</p>
-			    <a href="/page/anuncio.php" class="btn btn-primary">Ver anúncio</a>
-			</div>
-		    </div>
-		</div>
-	    </div>
-	</section>
     </body>
 </html>
