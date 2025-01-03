@@ -25,9 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		let db_fld = parent.getAttribute('name');
 		parent.innerHTML = '';
 		let getForm = document.createElement('form');
-		getForm.setAttribute('method', 'GET');
+		getForm.setAttribute('method', 'POST');
 		getForm.setAttribute('class', 'was-validated');
-		getForm.setAttribute('action', '/alterar/usuario.php');
+		getForm.setAttribute('action', '/ops/usuario.php');
 		let input_id = document.createElement('input');
 		input_id.setAttribute('name', 'id');
 		input_id.setAttribute('value', id_tel);
