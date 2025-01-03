@@ -98,7 +98,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 		    </div>
 		    <div class="col-xl-2 col-sm-12">
 			<h3>Data</h3>
-			<p><?php echo $AN['DATE_ANNOUNCEMENT'] ?></p>
+			<p><?php echo $AN['ANNOUNCEMENT_DATE'] ?></p>
 		    </div>
 		    <div class="col-xl-1 col-xm-12 mt-4 mx-auto">
 			<a href="/page/meu-anuncio.php"><button class="btn btn-sm btn-outline-light">Ver</button></a>

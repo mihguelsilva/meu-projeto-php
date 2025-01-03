@@ -78,12 +78,15 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			</div>
 			<div class="has-validation mt-3">
 			    <label class="form-label" for="titulo">Título</label>
-			    <input type="text" maxlength="20" class="form-control" name="titulo" id="titulo" placeholder="Insira um título breve e direto" required>
+			    <input type="text" maxlength="30" class="form-control" name="titulo" id="titulo" placeholder="Insira um título breve e direto" required>
 			    <div class="invalid-feedback">Insira seu título</div>
 			</div>
 			<div class="has-validation mt-3">
 			    <label class="form-label" for="estado">Estado</label>
 			    <select class="form-select" name="estado" id="estado" required aria-label="select example">
+				<option value="NOVO">NOVO</option>
+				<option value="SEMINOVO">SEMINOVO</option>
+				<option value="USADO">USADO</option>
 			    </select>
 			</div>
 			<div class="has-validation mt-3">

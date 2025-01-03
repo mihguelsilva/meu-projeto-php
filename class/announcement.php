@@ -3,7 +3,7 @@ class Anuncio {
     public function criarAnuncio($foto, $titulo, $categoria, $descricao, $valor, $data, $ficha, $fk_id_user)
     {
         global $pdo;
-        $sql = $pdo->prepare('INSERT INTO ANNOUNCEMENTS (TITLE, DESCRIPTION, PAY_VALUE, DATE_ANNOUNCEMENT, TECHNICAL_SHEET, FK_ANNOUNCEMENT_USER_ID, FK_ANNOUNCEMENT_CATEGORY_ID) VALUES (:titulo, :descricao, :valor, :data, :ficha, :fk_id_user, :fk_id_category)');
+        $sql = $pdo->prepare('INSERT INTO ANNOUNCEMENTS (TITLE, DESCRIPTION, ANNOUNCEMENT_VALUE, ANNOUNCEMENT_DATE , TECHNICAL_SHEET, FK_ANNOUNCEMENT_USER_ID, FK_ANNOUNCEMENT_CATEGORY_ID) VALUES (:titulo, :descricao, :valor, :data, :ficha, :fk_id_user, :fk_id_category)');
         $sql->bindValue(':titulo', $titulo);
         $sql->bindValue(':descricao', $descricao);
         $sql->bindValue(':valor', $valor);
