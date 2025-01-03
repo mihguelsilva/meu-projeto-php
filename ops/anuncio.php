@@ -18,8 +18,17 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME'])) {
         $AN_VALOR = addslashes($_POST['valor']);
         $AN_DATA = date('Y-m-d');
         $AN_FICHA = addslashes($_POST['ficha-tecnica']);
+        echo count($AN_FOTOS);
+        print_r($AN_FOTOS);
         $ANUNCIO->criarAnuncio($AN_FOTOS, $AN_TITULO, $AN_CATEGORIA, $AN_DESCRICAO, $AN_VALOR, $AN_DATA, $AN_FICHA, $_SESSION['LOGIN']);
-        header('Location: /meus-anuncios.php');
+        header('Location: /page/meus-anuncios.php');
+    }
+} else if (isset($_GET['action'])) {
+    if ($_GET['action'] == 'deletar') {
+        if ($_GET['fld'] == 'anuncio') {
+            $ANUNCIO->deletarAnuncio($_GET['id'], $_SESSION['LOGIN']);
+            header('Location: /page/meus-anuncios.php');
+        }
     }
 } else {
     header('Location: /');

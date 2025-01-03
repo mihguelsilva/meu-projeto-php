@@ -17,19 +17,33 @@ class Anuncio {
         if (!is_dir($IMG_DIR)) {
             mkdir($IMG_DIR);
         }
-        if (count($foto) > 0) {
-            for($a = 0; $a < count($foto['tmp_name']); $a++) {
-                $type = $foto['type'][$a];
-                if ($type == 'image/png' || $type == 'image/jpg') {
-                    $fotoNome = md5(rand(0,99999).time().'.jpg');
-                    move_uploaded_file($foto['tmp_name'][$a], $IMG_DIR.DIRECTORY_SEPARATOR.$fotoNome);
-                    $sql = $pdo->prepare('INSERT INTO PHOTOS (URL, FK_PHOTOS_ANNOUNCEMENT_ID) VALUES (:url, :id_anuncio)');
-                    $sql->bindValue(':url', $fotoNome);
-                    $sql->bindValue(':id_anuncio', $id_anuncio);
-                    $sql->execute();
-                }
+        for($a = 0; $a < count($foto['tmp_name']); $a++) {
+            $type = $foto['type'][$a];
+            if ($type == 'image/png' || $type == 'image/jpeg' || $type == 'image/jpg') {
+                $fotoNome = md5(rand(0,99999).time().'.jpg');
+                move_uploaded_file($foto['tmp_name'][$a], $IMG_DIR.DIRECTORY_SEPARATOR.$fotoNome);
+                $sql = $pdo->prepare('INSERT INTO PHOTOS (URL, FK_PHOTOS_ANNOUNCEMENT_ID) VALUES (:url, :id_anuncio)');
+                $sql->bindValue(':url', $fotoNome);
+                $sql->bindValue(':id_anuncio', $id_anuncio);
+                $sql->execute();
             }
         }
+    }
+    public function meusAnuncios($id) {
+        global $pdo;
+        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.TITLE, ANNOUNCEMENTS.DATE_ANNOUNCEMENT, ANNOUNCEMENTS.ID_ANNOUNCEMENT,
+(SELECT PHOTOS.URL FROM PHOTOS WHERE FK_PHOTOS_ANNOUNCEMENT_ID = ID_ANNOUNCEMENT LIMIT 1) AS PHOTO,
+(SELECT CATEGORY.NAME FROM CATEGORY WHERE ID_CATEGORY = FK_ANNOUNCEMENT_CATEGORY_ID) AS CATEGORY
+FROM ANNOUNCEMENTS WHERE FK_ANNOUNCEMENT_USER_ID = :id ORDER BY ID_ANNOUNCEMENT
+	');
+        $sql->bindValue(':id', $id);
+        $sql->execute();
+        if ($sql->rowCount() > 0) {
+            $data = $sql->fetchAll();
+        } else {
+            $data = array();
+        }
+        return $data;
     }
     public function verAnuncio()
     {
@@ -42,6 +56,26 @@ class Anuncio {
     public function atualizarAnuncio()
     {
         global $pdo;
+    }
+    public function deletarAnuncio($id_an, $id_user)
+    {
+        global $pdo;
+        $sql = $pdo->prepare('SELECT PHOTOS.URL FROM PHOTOS WHERE FK_PHOTOS_ANNOUNCEMENT_ID = :id');
+        $sql->bindValue(':id', $id_an);
+        $sql->execute();
+        if ($sql->rowCount() > 0) {
+            $DIR_IMG = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.'ads'.DIRECTORY_SEPARATOR.$id_user;
+            $fts = $sql->fetchAll();
+            foreach($fts as $ft) {
+                unlink($DIR_IMG.DIRECTORY_SEPARATOR.$ft['URL']);
+            }
+            $sql = $pdo->prepare('DELETE FROM PHOTOS WHERE FK_PHOTOS_ANNOUNCEMENT_ID = :id');
+            $sql->bindValue(':id', $id_an);
+            $sql->execute();
+        }
+        $sql = $pdo->prepare('DELETE FROM ANNOUNCEMENTS WHERE ID_ANNOUNCEMENT = :id');
+        $sql->bindValue(':id', $id_an);
+        $sql->execute();
     }
 }
 ?>

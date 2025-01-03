@@ -1,7 +1,11 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'global.php';
 require_once CONNECT;
-require_once CL_USER;
+require_once CL_CATEGORY;
+require_once CL_ANNOUNCEMENT;
+$CATEGORY = new Categoria();
+$ANUNCIO = new Anuncio();
+$ANUNCIOS = $ANUNCIO->meusAnuncios($_SESSION['LOGIN']);
 if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
     $ARRAY = explode(' ', $_SESSION['NAME']);
     $PRIMEIRO = explode(' ',$_SESSION['NAME'])[0];
@@ -24,7 +28,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 <html lang='pt-br' data-bs-theme='dark'>
     <head>
 	<meta charset='utf-8'>
-	<title>Página Principal</title>
+	<title>Meus Anúncios</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -35,7 +39,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 	    <div class="row">
 		<div class="col">
 		    <h1 class="display-1">Mihgara</h1>
-		    <h2>Meus Anúncios</h2>
+	p	    <h2>Meus Anúncios</h2>
 		</div>
 	    </div>
 	</header>
@@ -65,34 +69,51 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 	    </div>
 	</nav>
 	<section class="container-fluid mx-auto p-4">
-	    <div class="row border p-3 mb-3">
-		<div class="col-xl-2 col-sm-12">
-		    <figure class="meus-anuncios-figure" style="width:120px;">
-			<img src="/img/no-image.jpg" class="img-fluid img-thumbnail" width="100%">
-		    </figure>
+	    <?php
+	    if (count($ANUNCIOS) > 0) {
+		foreach($ANUNCIOS as $AN) {
+	    ?>
+		<div class="row border p-3 mb-3">
+		    <div class="col-xl-2 col-sm-12">
+			<figure class="meus-anuncios-figure" style="width:120px;">
+			    <?php
+			    if ($AN['PHOTO'] != NULL) {
+				$IMG = '/img/ads/'.$_SESSION['LOGIN'].'/'.$AN['PHOTO'];
+			    ?>
+				<img src="<?php echo $IMG; ?>" class="img-fluid img-thumbnail" width="100%">
+			    <?php
+			    } else {
+				echo '<img src="/img/no-image.jpg" class="img-fluid img-thumbnail" width="100%">';
+			    }
+			    ?>
+			</figure>
+		    </div>
+		    <div class="col-xl-2 col-sm-12">
+			<h3>Título</h3>
+			<p><?php echo $AN['TITLE']; ?></p>
+		    </div>
+		    <div class="col-xl-2 col-sm-12">
+			<h3>Categoria</h3>
+			<p><?php echo utf8_encode($AN['CATEGORY']); ?></p>
+		    </div>
+		    <div class="col-xl-2 col-sm-12">
+			<h3>Data</h3>
+			<p><?php echo $AN['DATE_ANNOUNCEMENT'] ?></p>
+		    </div>
+		    <div class="col-xl-1 col-xm-12 mt-4 mx-auto">
+			<a href="/page/meu-anuncio.php"><button class="btn btn-sm btn-outline-light">Ver</button></a>
+		    </div>
+		    <div class="col-xl-1 col-xm-12 mt-4 mx-auto">
+			<a href="/alterar/meu-anuncio.php"><button class="btn btn-sm btn-outline-warning">Editar</button></a>
+		    </div>
+		    <div class="col-xl-1 col-xm-12 mt-4 mb-3 mx-auto">
+			<a href="/ops/anuncio.php?id=<?php echo $AN['ID_ANNOUNCEMENT'] ?>&fld=anuncio&action=deletar"><button class="btn btn-sm btn-outline-danger">Deletar</button></a>
+		    </div>
 		</div>
-		<div class="col-xl-2 col-sm-12">
-		    <h3>Título</h3>
-		    <p>Geladeira</p>
-		</div>
-		<div class="col-xl-2 col-sm-12">
-		    <h3>Categoria</h3>
-		    <p>Coméstico</p>
-		</div>
-		<div class="col-xl-2 col-sm-12">
-		    <h3>Data</h3>
-		    <p>2024-02-01</p>
-		</div>
-		<div class="col-xl-1 col-xm-12 mt-4 mx-auto">
-		    <a href="/page/meu-anuncio.php"><button class="btn btn-sm btn-outline-light">Ver</button></a>
-		</div>
-		<div class="col-xl-1 col-xm-12 mt-4 mx-auto">
-		    <a href="/alterar/meu-anuncio.php"><button class="btn btn-sm btn-outline-warning">Editar</button></a>
-		</div>
-		<div class="col-xl-1 col-xm-12 mt-4 mb-3 mx-auto">
-		    <a href="/ops/anuncio.php"><button class="btn btn-sm btn-outline-danger">Deletar</button></a>
-		</div>
-	    </div>
+	    <?php
+	    }
+	    }
+	    ?>
 	</section>
     </body>
 </html>
