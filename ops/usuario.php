@@ -7,7 +7,7 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME']) && !isset($_SESSION[
 }
 $USER = new Usuario();
 if (isset($_FILES['perfil'])) {
-    $USER->atualizarUmCampo('USER_REGISTER', 'PHOTO', $_FILES['perfil'], $_SESSION['LOGIN'], 'ID');
+    $USER->atualizarUmCampo('USER_REGISTER', 'PHOTO', $_FILES['perfil'], $_SESSION['LOGIN'], 'ID_USER');
     echo '<script>window.location.href = "/page/conta.php"</script>';
 } else if (isset($_POST['action'])) {
     if ($_POST['action'] == 'atualizar') {
@@ -53,10 +53,11 @@ if (isset($_FILES['perfil'])) {
         $FOTO = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'.DIRECTORY_SEPARATOR.'perfil'.DIRECTORY_SEPARATOR.$_SESSION['LOGIN'].DIRECTORY_SEPARATOR.$_GET['ctt'];
         unlink($FOTO);
         $_SESSION['PHOTO'] = NULL;
-        $USER->atualizarUmCampo('USER_REGISTER', 'PHOTO', NULL, $_SESSION['LOGIN'], 'ID');
+        $USER->atualizarUmCampo('USER_REGISTER', 'PHOTO', NULL, $_SESSION['LOGIN'], 'ID_USER');
     }
     echo '<script>window.location.href = "/page/conta.php"</script>';
 }else {
     header('Location: /');
 }
 ?>
+

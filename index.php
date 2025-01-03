@@ -98,7 +98,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			<h4 class="card-title"><?php echo $t['TITLE']; ?></h4>
 			<?php
 			if ($t['PHOTO'] != NULL) {
-			    $AN_PHOTO = '/img/ads/'.$_SESSION['LOGIN'].'/'.$t['PHOTO'];
+			    $AN_PHOTO = '/img/ads/'.$t['USER_ID'].'/'.$t['PHOTO'];
 			?>
 			    <img class="card-img-top" src="<?php echo $AN_PHOTO; ?>" alt="Card image" style="120px">
 			<?php
@@ -109,7 +109,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			<div class="card-body">
 			    <p class="card-text">
 				<?php echo $QTD; ?> itens<br>
-				R$ <?php echo $t['PAY_VALUE'] ?><br>
+				R$ <?php echo number_format($t['ANNOUNCEMENT_VALUE'], 2) ?><br>
 				<b><?php echo $t['STATE'].'/'.$t['CITY']; ?></b><br>
 				<i><?php echo utf8_encode($t['CATEGORY']); ?></i>
 			    </p>

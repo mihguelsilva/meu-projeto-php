@@ -87,9 +87,9 @@ $telefones = $USER->ConsultarTodosTelefones($_SESSION['LOGIN']);
                                     </td>
 				<?php
 				} else {
-                                    echo '<td class="col"><img class="img-fluid img-thumbnail" src="/img/perfil/' . $dados['ID'] . DIRECTORY_SEPARATOR . $dados['PHOTO'] . '" width="120px">
+                                    echo '<td class="col"><img class="img-fluid img-thumbnail" src="/img/perfil/' . $dados['ID_USER'] . DIRECTORY_SEPARATOR . $dados['PHOTO'] . '" width="120px">
 <div>
-<a href="/ops/usuario.php?id='.$dados['ID'].'&ctt='.$dados['PHOTO'].'&fld=foto&action=deletar">
+<a href="/ops/usuario.php?id='.$dados['ID_USER'].'&ctt='.$dados['PHOTO'].'&fld=foto&action=deletar">
 <button class="btn btn-outline-danger btn-sm" type="button" style="width:120px;" id="button-delete">Apagar</button>
 </a></div></td>';
 				}

@@ -16,6 +16,8 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
     } else {
 	$FOTO = '/img/perfil/' . $_SESSION['LOGIN'] . '/' . $_SESSION['PHOTO'];
     }
+} else if (!isset($_GET['id'])) {
+    header('Location: /');
 }
 ?>
 <!DOCTYPE html>

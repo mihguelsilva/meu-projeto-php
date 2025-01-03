@@ -82,6 +82,11 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			    <div class="invalid-feedback">Insira seu título</div>
 			</div>
 			<div class="has-validation mt-3">
+			    <label class="form-label" for="estado">Estado</label>
+			    <select class="form-select" name="estado" id="estado" required aria-label="select example">
+			    </select>
+			</div>
+			<div class="has-validation mt-3">
 			    <label class="form-label" for="categoria">Categoria</label>
 			    <select class="form-select" name="categoria" id="categoria" required aria-label="select example">
 				<?php

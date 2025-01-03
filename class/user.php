@@ -4,7 +4,7 @@ class Usuario
     public function cadastrar($foto, $nome, $email, $cpf_cnpj, $genero, $usuario, $senha, $cep, $numero, $rua, $bairro, $cidade, $estado, $residencial, $comercial, $celular)
     {
         global $pdo;
-        $sql = $pdo->prepare('SELECT ID FROM USER_REGISTER WHERE EMAIL LIKE :email OR SSN_EIN LIKE :cpf_cnpj OR USERNAME LIKE :usuario');
+        $sql = $pdo->prepare('SELECT ID_USER FROM USER_REGISTER WHERE EMAIL LIKE :email OR SSN_EIN LIKE :cpf_cnpj OR USERNAME LIKE :usuario');
         $sql->bindValue(':email', $email);
         $sql->bindValue(':cpf_cnpj', $cpf_cnpj);
         $sql->bindValue(':usuario', $usuario);
@@ -13,7 +13,7 @@ class Usuario
             return false;
         } else {
             $senha = md5($senha);
-            $sql = $pdo->prepare('INSERT INTO USER_REGISTER (NAME, EMAIL, SSN_EIN, GENDER, USERNAME, PASS, ZIP_CODE, NUMBER, STREET, NEIGHBORHOOD, CITY, STATE) VALUES (:nome, :email, :cpf_cnpj, :genero, :usuario, :senha, :cep, :numero, :rua, :bairro, :cidade, :estado)');
+            $sql = $pdo->prepare('INSERT INTO USER_REGISTER (NAME, EMAIL, SSN_EIN, GENDER, USERNAME, PASSWORD, ZIP_CODE, NUMBER, STREET, NEIGHBORHOOD, CITY, STATE) VALUES (:nome, :email, :cpf_cnpj, :genero, :usuario, :senha, :cep, :numero, :rua, :bairro, :cidade, :estado)');
             $sql->bindValue(':nome', $nome);
             $sql->bindValue(':email', $email);
             $sql->bindValue(':cpf_cnpj', $cpf_cnpj);
@@ -37,7 +37,7 @@ class Usuario
                 if ($foto['type'] == 'image/jpeg' || $foto['type'] == 'image/png') {
                     $fotoNome = md5(rand(0, 99999) . time() . ".jpg");
                     move_uploaded_file($foto['tmp_name'], $ID_DIR . DIRECTORY_SEPARATOR . $fotoNome);
-                    $sql = $pdo->prepare('UPDATE USER_REGISTER SET PHOTO = :foto WHERE ID = :id');
+                    $sql = $pdo->prepare('UPDATE USER_REGISTER SET PHOTO = :foto WHERE ID_USER = :id');
                     $sql->bindValue(':foto', $fotoNome);
                     $sql->bindValue(':id', $id_user);
                     $sql->execute();
@@ -58,13 +58,13 @@ class Usuario
     {
         global $pdo;
         $senha = md5($senha);
-        $sql = $pdo->prepare('SELECT ID, PHOTO, NAME, GENDER FROM USER_REGISTER WHERE USERNAME = :username AND PASS = :password');
+        $sql = $pdo->prepare('SELECT ID_USER, PHOTO, NAME, GENDER FROM USER_REGISTER WHERE USERNAME = :username AND PASSWORD = :password');
         $sql->bindValue(':username', $usuario);
         $sql->bindValue(':password', $senha);
         $sql->execute();
         if ($sql->rowCount() > 0) {
             $data = $sql->fetch();
-            $_SESSION['LOGIN'] = $data['ID'];
+            $_SESSION['LOGIN'] = $data['ID_USER'];
             $_SESSION['NAME'] = $data['NAME'];
             $_SESSION['PHOTO'] = $data['PHOTO'];
             $_SESSION['GENDER'] = $data['GENDER'];
@@ -76,7 +76,7 @@ class Usuario
     public function ConsultarTudo($id)
     {
         global $pdo;
-        $sql = $pdo->prepare('SELECT * FROM USER_REGISTER WHERE ID = :id');
+        $sql = $pdo->prepare('SELECT * FROM USER_REGISTER WHERE ID_USER = :id');
         $sql->bindValue(':id', $id);
         $sql->execute();
         if ($sql->rowCount() > 0) {
@@ -104,6 +104,9 @@ class Usuario
             if ($valor['type'] == 'image/jpeg' || $valor['type'] == 'image/png') {
                 $PERFIL = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'perfil';
                 $ID_DIR = $PERFIL . DIRECTORY_SEPARATOR . $id;
+		if (!is_dir($ID_DIR)) {
+		    mkdir($ID_DIR);
+		}
                 $dado = md5(rand(0, 99999) . time() . ".jpg");
                 $_SESSION['PHOTO'] = $dado;
                 move_uploaded_file($valor['tmp_name'], $ID_DIR . DIRECTORY_SEPARATOR . $dado);
@@ -120,7 +123,7 @@ class Usuario
     {
         global $pdo;
         $senha = md5($senha);
-        $sql = $pdo->prepare('UPDATE USER_REGISTER SET USERNAME = :username, PASS = :senha WHERE ID = :id');
+        $sql = $pdo->prepare('UPDATE USER_REGISTER SET USERNAME = :username, PASSWORD = :senha WHERE ID_USER = :id');
         $sql->bindValue(':username', $usuario);
         $sql->bindValue(':senha', $senha);
         $sql->bindValue(':id', $id);
@@ -129,7 +132,7 @@ class Usuario
     public function atualizarPessoais($nome, $email, $cpf_cnpj, $genero, $id)
     {
         global $pdo;
-        $sql = $pdo->prepare('UPDATE USER_REGISTER SET NAME = :nome, EMAIL = :email, SSN_EIN = :cpf_cnpj, GENDER = :genero WHERE ID = :id');
+        $sql = $pdo->prepare('UPDATE USER_REGISTER SET NAME = :nome, EMAIL = :email, SSN_EIN = :cpf_cnpj, GENDER = :genero WHERE ID_USER = :id');
         $sql->bindValue('nome', $nome);
         $sql->bindValue(':email', $email);
         $sql->bindValue(':cpf_cnpj', $cpf_cnpj);
@@ -139,7 +142,7 @@ class Usuario
     }
     public function atualizarEndereco($cep, $numero, $rua, $bairro, $cidade, $estado, $id) {
         global $pdo;
-        $sql = $pdo->prepare('UPDATE USER_REGISTER SET ZIP_CODE = :cep, NUMBER = :numero, STREET = :rua, NEIGHBORHOOD = :bairro, CITY = :cidade, STATE = :estado WHERE ID = :id');
+        $sql = $pdo->prepare('UPDATE USER_REGISTER SET ZIP_CODE = :cep, NUMBER = :numero, STREET = :rua, NEIGHBORHOOD = :bairro, CITY = :cidade, STATE = :estado WHERE ID_USER = :id');
         $sql->bindValue(':cep', $cep);
         $sql->bindValue(':numero', $numero);
         $sql->bindValue(':rua', $rua);
@@ -151,7 +154,7 @@ class Usuario
     }
     public function desativarConta($id) {
         global $pdo;
-        // $sql = $pdo->prepare('UPDATE USER_REGISTER SET ACTIVE = :desativar WHERE ID = :id');
+        // $sql = $pdo->prepare('UPDATE USER_REGISTER SET ACTIVE = :desativar WHERE ID_USER = :id');
         // $sql->bindValue(':desativar', false);
         // $sql->bindValue(':id', $id);
         // $sql->execute();
