@@ -1,11 +1,13 @@
 <?php
 class Anuncio {
-    public function criarAnuncio($foto, $titulo, $categoria, $descricao, $valor, $data, $ficha, $fk_id_user)
+    public function criarAnuncio($foto, $titulo, $categoria, $estado, $quantidade, $descricao, $valor, $data, $ficha, $fk_id_user)
     {
         global $pdo;
-        $sql = $pdo->prepare('INSERT INTO ANNOUNCEMENTS (TITLE, DESCRIPTION, ANNOUNCEMENT_VALUE, ANNOUNCEMENT_DATE , TECHNICAL_SHEET, FK_ANNOUNCEMENT_USER_ID, FK_ANNOUNCEMENT_CATEGORY_ID) VALUES (:titulo, :descricao, :valor, :data, :ficha, :fk_id_user, :fk_id_category)');
+        $sql = $pdo->prepare('INSERT INTO ANNOUNCEMENTS (TITLE, DESCRIPTION, STATUS, QUANTITY, ANNOUNCEMENT_VALUE, ANNOUNCEMENT_DATE , TECHNICAL_SHEET, FK_ANNOUNCEMENT_USER_ID, FK_ANNOUNCEMENT_CATEGORY_ID) VALUES (:titulo, :descricao, :estado, :quantidade, :valor, :data, :ficha, :fk_id_user, :fk_id_category)');
         $sql->bindValue(':titulo', $titulo);
         $sql->bindValue(':descricao', $descricao);
+	$sql->bindValue(':estado', $estado);
+	$sql->bindValue(':quantidade', $quantidade);
         $sql->bindValue(':valor', $valor);
         $sql->bindValue(':data', $data);
         $sql->bindValue(':ficha', $ficha);
@@ -31,7 +33,7 @@ class Anuncio {
     }
     public function meusAnuncios($id) {
         global $pdo;
-        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.TITLE, ANNOUNCEMENTS.ANNOUNCEMENT_DATE, ANNOUNCEMENTS.ID_ANNOUNCEMENT,
+        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.TITLE, ANNOUNCEMENTS.QUANTITY, ANNOUNCEMENTS.ANNOUNCEMENT_VALUE, ANNOUNCEMENTS.ANNOUNCEMENT_DATE, ANNOUNCEMENTS.ID_ANNOUNCEMENT,
 (SELECT PHOTOS.URL FROM PHOTOS WHERE FK_PHOTOS_ANNOUNCEMENT_ID = ID_ANNOUNCEMENT LIMIT 1) AS PHOTO,
 (SELECT CATEGORY.NAME FROM CATEGORY WHERE ID_CATEGORY = FK_ANNOUNCEMENT_CATEGORY_ID) AS CATEGORY
 FROM ANNOUNCEMENTS WHERE FK_ANNOUNCEMENT_USER_ID = :id ORDER BY(ID_ANNOUNCEMENT) DESC
@@ -45,9 +47,40 @@ FROM ANNOUNCEMENTS WHERE FK_ANNOUNCEMENT_USER_ID = :id ORDER BY(ID_ANNOUNCEMENT)
         }
         return $data;
     }
-    public function verAnuncio()
+    public function verAnuncio($id)
     {
         global $pdo;
+	$sql = $pdo->prepare('SELECT ANNOUNCEMENTS.TITLE, ANNOUNCEMENTS.STATUS,
+ANNOUNCEMENTS.DESCRIPTION, ANNOUNCEMENTS.QUANTITY, ANNOUNCEMENTS.ANNOUNCEMENT_VALUE,
+ANNOUNCEMENTS.ANNOUNCEMENT_DATE, ANNOUNCEMENTS.TECHNICAL_SHEET, USER_REGISTER.NAME, USER_REGISTER.EMAIL, USER_REGISTER.ID_USER FROM ANNOUNCEMENTS INNER JOIN USER_REGISTER ON
+ANNOUNCEMENTS.FK_ANNOUNCEMENT_USER_ID = USER_REGISTER.ID_USER WHERE
+ANNOUNCEMENTS.ID_ANNOUNCEMENT = :id');
+	$sql->bindValue(':id', $id);
+	$sql->execute();
+	if ($sql->rowCount() > 0) {
+	    $data = $sql->fetch(PDO::FETCH_ASSOC);
+	    $sql = $pdo->prepare('SELECT PHONE.HOME, PHONE.BUSINESS, PHONE.CELL
+FROM PHONE WHERE PHONE.FK_PHONE_USER_ID = :id');
+	    $sql->bindValue(':id', $data['ID_USER']);
+	    $sql->execute();
+	    if ($sql->rowCount() > 0) {
+		$data['PHONE'] = $sql->fetchAll(PDO::FETCH_ASSOC);
+	    } else {
+		$data['PHONE'] = array();
+	    }
+	    $sql = $pdo->prepare('SELECT PHOTOS.URL FROM PHOTOS WHERE
+PHOTOS.FK_PHOTOS_ANNOUNCEMENT_ID = :id');
+	    $sql->bindValue(':id', $id);
+	    $sql->execute();
+	    if ($sql->rowCount() > 0) {
+		$data['PHOTOS'] = $sql->fetchAll(PDO::FETCH_ASSOC);
+	    } else {
+		$data['PHOTOS'] = array();
+	    }
+	} else {
+	    $data = NULL;
+	}
+	return $data;
     }
     public function verTodosAnuncios()
     {

@@ -68,46 +68,46 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 		</div>
 	    </div>
 	</nav>
-	<section class="container-fluid mx-auto p-4">
+	<section class="container-fluid mt-3">
 	    <?php
 	    if (count($ANUNCIOS) > 0) {
 		foreach($ANUNCIOS as $AN) {
 	    ?>
-		<div class="row border p-3 mb-3">
+		<div class="row border mb-3">
 		    <div class="col-xl-2 col-sm-12">
-			<figure class="meus-anuncios-figure" style="width:120px;">
-			    <?php
-			    if ($AN['PHOTO'] != NULL) {
-				$IMG = '/img/ads/'.$_SESSION['LOGIN'].'/'.$AN['PHOTO'];
-			    ?>
-				<img src="<?php echo $IMG; ?>" class="img-fluid img-thumbnail" width="100%">
-			    <?php
-			    } else {
-				echo '<img src="/img/no-image.jpg" class="img-fluid img-thumbnail" width="100%">';
-			    }
-			    ?>
-			</figure>
+			<?php
+			if ($AN['PHOTO'] != NULL) {
+			    $IMG = '/img/ads/'.$_SESSION['LOGIN'].'/'.$AN['PHOTO'];
+			?>
+			    <img src="<?php echo $IMG; ?>" class="img-fluid img-thumbnail card-img-top" width="120px">
+			<?php
+			} else {
+			    echo '<img src="/img/no-image.jpg" class="img-fluid img-thumbnail" width="120px">';
+			}
+			?>
 		    </div>
 		    <div class="col-xl-2 col-sm-12">
-			<h3>Título</h3>
+			<h4 class="">Título</h4>
 			<p><?php echo $AN['TITLE']; ?></p>
 		    </div>
-		    <div class="col-xl-2 col-sm-12">
-			<h3>Categoria</h3>
-			<p><?php echo utf8_encode($AN['CATEGORY']); ?></p>
+		    <div class="col-xl-1 col-sm-12">
+			<h4>Itens</h4>
+			<p><?php echo utf8_encode($AN['QUANTITY']); ?></p>
 		    </div>
-		    <div class="col-xl-2 col-sm-12">
-			<h3>Data</h3>
-			<p><?php echo $AN['ANNOUNCEMENT_DATE'] ?></p>
+		    <div class="col-xl-2 col-xm-12">
+			<h4>Preço</h4>
+			<p>R$ <?php echo number_format($AN['ANNOUNCEMENT_VALUE'], 2); ?></p>
 		    </div>
-		    <div class="col-xl-1 col-xm-12 mt-4 mx-auto">
-			<a href="/page/meu-anuncio.php"><button class="btn btn-sm btn-outline-light">Ver</button></a>
+		    <div class="col-xl-2 col-xm-12">
+			<h4>Categoria</h4>
+			<p><?php echo utf8_encode($AN['CATEGORY']); ?>
 		    </div>
-		    <div class="col-xl-1 col-xm-12 mt-4 mx-auto">
-			<a href="/alterar/meu-anuncio.php"><button class="btn btn-sm btn-outline-warning">Editar</button></a>
-		    </div>
-		    <div class="col-xl-1 col-xm-12 mt-4 mb-3 mx-auto">
-			<a href="/ops/anuncio.php?id=<?php echo $AN['ID_ANNOUNCEMENT'] ?>&fld=anuncio&action=deletar"><button class="btn btn-sm btn-outline-danger">Deletar</button></a>
+		    <div class="col-xl-2 col-xm-12 mt-4 mb-3 mx-auto">
+			<div class="btn-group">
+			    <a href="#" class="btn btn-sm btn-outline-light" aria-current="page">Ver</a>
+			    <a href="#" class="btn btn-sm btn-outline-warning">Editar</a>
+			    <a href="/ops/anuncio.php?id=<?php echo $AN['ID_ANNOUNCEMENT'] ?>&fld=anuncio&action=deletar" class="btn btn-sm btn-outline-danger">Deletar</a>
+			</div>
 		    </div>
 		</div>
 	    <?php

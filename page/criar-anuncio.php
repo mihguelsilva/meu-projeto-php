@@ -90,6 +90,10 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			    </select>
 			</div>
 			<div class="has-validation mt-3">
+			    <label class="form-label" for="quantidade">Quantidade de Itens</label>
+			    <input type="text" class="form-control" name="quantidade" id="quantidade" placeholder="10" required>
+			</div>
+			<div class="has-validation mt-3">
 			    <label class="form-label" for="categoria">Categoria</label>
 			    <select class="form-select" name="categoria" id="categoria" required aria-label="select example">
 				<?php

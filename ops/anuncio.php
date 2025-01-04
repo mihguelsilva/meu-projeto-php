@@ -14,13 +14,15 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME'])) {
         }
         $AN_TITULO = addslashes($_POST['titulo']);
         $AN_CATEGORIA = addslashes($_POST['categoria']);
+	$AN_ESTADO = addslashes($_POST['estado']);
+	$AN_QUANTIDADE = addslashes($_POST['quantidade']);
         $AN_DESCRICAO = addslashes($_POST['descricao']);
         $AN_VALOR = addslashes($_POST['valor']);
         $AN_DATA = date('Y-m-d');
         $AN_FICHA = addslashes($_POST['ficha-tecnica']);
         echo count($AN_FOTOS);
         print_r($AN_FOTOS);
-        $ANUNCIO->criarAnuncio($AN_FOTOS, $AN_TITULO, $AN_CATEGORIA, $AN_DESCRICAO, $AN_VALOR, $AN_DATA, $AN_FICHA, $_SESSION['LOGIN']);
+        $ANUNCIO->criarAnuncio($AN_FOTOS, $AN_TITULO, $AN_CATEGORIA, $AN_ESTADO, $AN_QUANTIDADE, $AN_DESCRICAO, $AN_VALOR, $AN_DATA, $AN_FICHA, $_SESSION['LOGIN']);
         header('Location: /page/meus-anuncios.php');
     }
 } else if (isset($_GET['action'])) {
