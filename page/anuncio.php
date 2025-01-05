@@ -256,8 +256,7 @@ $ANUNCIO_FOTOS = $ANUNCIO->consultarFotos('FK_PHOTOS_ANNOUNCEMENT_ID', $_GET['id
 					<?php
 					if (isset($_SESSION['LOGIN'])) {
 						if (
-							$_SESSION['LOGIN'] == $COMENTARIO['FK_COMMENTS_USER_ID'] ||
-							$_SESSION['LOGIN'] == $VER_ANUNCIO['ID_USER']
+							$_SESSION['LOGIN'] == $COMENTARIO['FK_COMMENTS_USER_ID']
 						) {
 					?>
 							<div class="btn-group">
