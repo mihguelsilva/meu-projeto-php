@@ -21,11 +21,12 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 require_once CL_USER;
 require_once CL_ANNOUNCEMENT;
 require_once CL_CATEGORY;
-$USER = new Usuario();
-$ANN = new Anuncio();
-$CAT = new Categoria();
+//$USER = new Usuario();
+$ANUNCIO = new Anuncio();
+//$CAT = new Categoria();
 if (!empty($_GET['id'])) $_GET['id'] = addslashes($_GET['id']);
-$VER = $ANN->VerAnuncio($_GET['id']);
+$VER_ANUNCIO = $ANUNCIO->VerAnuncio($_GET['id']);
+$ANUNCIO_FOTOS = $ANUNCIO->consultarFotos('FK_PHOTOS_ANNOUNCEMENT_ID', $_GET['id']);
 ?>
 <!DOCTYPE html>
 <html lang='pt-br' data-bs-theme='dark'>
@@ -92,18 +93,18 @@ $VER = $ANN->VerAnuncio($_GET['id']);
 	<section class="container-fluid mb-3">
 	    <div class="row mt-3">
 		<div class="col-xl-8 col-sm-12 mx-auto mt-3">
-		    <kbd>Anúncio criado em <?php echo $VER['ANNOUNCEMENT_DATE']?></kbd>
+		    <kbd>Anúncio criado em <?php echo $VER_ANUNCIO['ANNOUNCEMENT_DATE']?></kbd>
 		</div>
 		<div class="col-xl-8 col-sm-12 mx-auto mt-5">
 		    <h3 class="mb-5">Dados do Produto</h3>
 		    <div class="container mb-5 ">
 			<?php
-			if (count($VER['PHOTOS']) > 0) {
-			    foreach($VER['PHOTOS'] as $ft) {
-				$AN_IMG = '/img/ads/'.$VER['ID_USER'].'/'.$ft['URL'];
+			if (count($ANUNCIO_FOTOS) > 0) {
+			    foreach($ANUNCIO_FOTOS as $ft) {
+				$ANUNCIO_FOTO = '/img/ads/'.$_GET['id'].'/'.$ft['URL'];
 			?>
 
-			    <img src="<?php echo $AN_IMG ?>" class="img-thumbnail" alt="Cinque Terre" width="200px">
+			    <img src="<?php echo $ANUNCIO_FOTO ?>" class="img-thumbnail" alt="Cinque Terre" width="200px">
 			<?php
 			}
 			} else {
@@ -116,28 +117,36 @@ $VER = $ANN->VerAnuncio($_GET['id']);
 		    <table class="table table-dark overflow-auto">
 			<tr>
 			    <th class="col">Título</th>
-			    <td class="col"><?php echo $VER['TITLE']; ?></td>
+			    <td class="col"><?php echo $VER_ANUNCIO['TITLE']; ?></td>
 			</tr>
 			<tr>
 			    <th class="col">Estado do produto</th>
-			    <td class="col"><?php echo $VER['STATUS'] ?></td>
+			    <td class="col"><?php echo $VER_ANUNCIO['STATUS'] ?></td>
 
 			</tr>
 			<tr>
 			    <th class="col">Descrição</th>
-			    <td class="col"><?php echo $VER['DESCRIPTION'];?></td>
+			    <td class="col"><?php echo $VER_ANUNCIO['DESCRIPTION'];?></td>
 			</tr>
 			<tr>
 			    <th class="col">Quantidade</th>
-			    <td class="col"><?php echo $VER['QUANTITY'] ?></td>
+			    <td class="col"><?php echo $VER_ANUNCIO['QUANTITY'] ?>
+				<?php
+				if ($VER_ANUNCIO['QUANTITY'] == NULL || $VER_ANUNCIO['QUANTITY'] == 0) {
+				    echo '<span class="bagde rounded-pill p-1 fw-bolder g-danger" style="font-size:12pt;">Sem estoque</span>';
+				} else {
+				    echo '<span class="bagde rounded-pill p-1 fw-bolder bg-success" style="font-size:12pt;">Em estoque</span>';
+				}
+				?>
+			    </td>
 			</tr>
 			<tr>
 			    <th class="col">Valor do Produto</th>
-			    <td class="col">R$ <?php echo number_format($VER['ANNOUNCEMENT_VALUE'], 2); ?></td>
+			    <td class="col">R$ <?php echo number_format($VER_ANUNCIO['ANNOUNCEMENT_VALUE'], 2); ?></td>
 			</tr>
 			<tr>
 			    <th class="col">Ficha Técnica</th>
-			    <td class="col"><?php echo $VER['TECHNICAL_SHEET'] ?></td>
+			    <td class="col"><?php echo $VER_ANUNCIO['TECHNICAL_SHEET'] ?></td>
 			</tr>
 		    </table>
 		</div>
@@ -146,28 +155,38 @@ $VER = $ANN->VerAnuncio($_GET['id']);
 		    <table class="table table-dark">
 			<tr>
 			    <th class="col">Nome</th>
-			    <td class="col"><?php echo $VER['NAME'] ?></td>
+			    <td class="col"><?php echo $VER_ANUNCIO['NAME'] ?></td>
 			</tr>
 			<tr>
 			    <th class="col">Email</th>
-			    <td class="col"><?php echo $VER['EMAIL'] ?></td>
+			    <td class="col"><?php echo $VER_ANUNCIO['EMAIL'] ?></td>
 			</tr>
 			<tr>
 			    <th class="col">Telefone</th>
 			    <?php
-			    if (count($VER['PHONE']) > 0) {
+			    if (count($VER_ANUNCIO['PHONE']) > 0) {
 				echo '<td class="col">';
-				for($a = 0; $a < count($VER['PHONE']); $a++) {
-				    foreach($VER['PHONE'][$a] as $telefone) {
+				for($a = 0; $a < count($VER_ANUNCIO['PHONE']); $a++) {
+				    foreach($VER_ANUNCIO['PHONE'][$a] as $chave=>$telefone) {
 					if ($telefone != NULL) {
-					    echo $telefone . '&nbsp;&nbsp;';
+					    if($chave == 'BUSINESS' || $chave == 'HOME') {
+						echo '<div><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+  <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+</svg> ';
+					    } else {
+						echo '<div><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-phone" viewBox="0 0 16 16">
+  <path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"/>
+  <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+</svg> ';
+					    }
+					    echo $telefone . '&nbsp;&nbsp;</div>';
 					}
 				    }
 				}
 				echo '</td>';
 			    } else {
 				echo '<td class="col">Sem contato por telefone</td>';
-			    }
+					    }
 			    ?>
 			</tr>
 		    </table>

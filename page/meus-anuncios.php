@@ -77,7 +77,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 		    <div class="col-xl-2 col-sm-12">
 			<?php
 			if ($AN['PHOTO'] != NULL) {
-			    $IMG = '/img/ads/'.$_SESSION['LOGIN'].'/'.$AN['PHOTO'];
+			    $IMG = '/img/ads/'.$AN['ID_ANNOUNCEMENT'].'/'.$AN['PHOTO'];
 			?>
 			    <img src="<?php echo $IMG; ?>" class="img-fluid img-thumbnail card-img-top" width="120px">
 			<?php
@@ -104,9 +104,9 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 		    </div>
 		    <div class="col-xl-2 col-xm-12 mt-4 mb-3 mx-auto">
 			<div class="btn-group">
-			    <a href="#" class="btn btn-sm btn-outline-light" aria-current="page">Ver</a>
+			    <a href="/page/anuncio.php?id=<?php echo $AN['ID_ANNOUNCEMENT']; ?>" class="btn btn-sm btn-outline-light" aria-current="page">Ver</a>
 			    <a href="#" class="btn btn-sm btn-outline-warning">Editar</a>
-			    <a href="/ops/anuncio.php?id=<?php echo $AN['ID_ANNOUNCEMENT'] ?>&fld=anuncio&action=deletar" class="btn btn-sm btn-outline-danger">Deletar</a>
+			    <a href="/ops/anuncio.php?id=<?php echo $AN['ID_ANNOUNCEMENT']; ?>&fld=anuncio&action=deletar" class="btn btn-sm btn-outline-danger">Deletar</a>
 			</div>
 		    </div>
 		</div>
