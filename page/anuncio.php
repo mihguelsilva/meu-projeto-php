@@ -221,19 +221,3 @@ $VER = $ANN->VerAnuncio($_GET['id']);
 	</section>
     </body>
 </html>
-
-<?php
-global $pdo;
-$sql = $pdo->prepare('SELECT COMMENTS.ID_COMMENT, COMMENTS.CONTENT, COMMENTS.COMMENT_DATE,
-USER_REGISTER.ID_USER FROM COMMENTS INNER_JOIN USER_REGISTER ON
-COMMENTS.FK_COMMENTS_USER_ID = USER_REGISTER.ID_USER WHERE
-FK_COMMENTS_ANNOUNCEMENT_ID = :id');
-$sql->bindValue(':id', $id);
-$sql->execute();
-if ($sql->rowCount() > 0) {
-    $data = $sql->fetchAll(PDO::FETCH_ASSOC);
-} else {
-    $data = array();
-}
-return $data;
-?>

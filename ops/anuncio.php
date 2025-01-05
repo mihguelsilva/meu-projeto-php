@@ -27,7 +27,7 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME'])) {
             $_SESSION['LOGIN']
         );
         $dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'
-        .DIRECTORY_SEPARATOR.'ads'.DIRECTORY_SEPARATOR.$_SESSION['LOGIN'];
+        .DIRECTORY_SEPARATOR.'ads'.DIRECTORY_SEPARATOR.$id_anuncio;
         $fotos = $ANUNCIO->manipularFotos($_FILES['fotos'], $dir, 'cadastrar');
         $ANUNCIO->cadastrarFotos('FK_PHOTOS_ANNOUNCEMENT_ID', $fotos, $id_anuncio);
         header('Location: /page/meus-anuncios.php');
@@ -35,29 +35,28 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME'])) {
 } else if (isset($_GET['action'])) {
     if ($_GET['action'] == 'deletar') {
         if ($_GET['fld'] == 'anuncio') {
-            /*
-            $ANUNCIO->deletarAnuncio($_GET['id'], $_SESSION['LOGIN']);
-            header('Location: /page/meus-anuncios.php');
-            */
             $fotos = $ANUNCIO->consultarFotos(
                 'FK_PHOTOS_ANNOUNCEMENT_ID',
                 $_GET['id']
             );
-            $dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'
-            .DIRECTORY_SEPARATOR.'ads'.DIRECTORY_SEPARATOR.$_GET['id'];
-            foreach($fotos as $chave => $valor) {
-                $DELETAR_FOTOS[$chave] = $valor['URL'];
+            if (count($fotos) > 0) {
+                $dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'
+                    .DIRECTORY_SEPARATOR.'ads'.DIRECTORY_SEPARATOR.$_GET['id'];
+                foreach($fotos as $chave => $valor) {
+                    $DELETAR_FOTOS[$chave] = $valor['URL'];
+                }
+                $ANUNCIO->manipularFotos(
+                    $DELETAR_FOTOS, 
+                    $dir, 
+                    'deletar'
+                );
+                rmdir($dir);
+                $ANUNCIO->deletarDado(
+                    'PHOTOS', 
+                    'FK_PHOTOS_ANNOUNCEMENT_ID', 
+                    $_GET['id']
+                );
             }
-            $ANUNCIO->manipularFotos(
-                $DELETAR_FOTOS, 
-                $dir, 
-                'deletar'
-            );
-            $ANUNCIO->deletarDado(
-                'PHOTOS', 
-                'FK_PHOTOS_ANNOUNCEMENT_ID', 
-                $_GET['id']
-            );
             $ANUNCIO->deletarDado(
                 'ANNOUNCEMENTS', 
                 'ID_ANNOUNCEMENT', 
