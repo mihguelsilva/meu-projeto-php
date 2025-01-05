@@ -57,6 +57,8 @@ abstract class Operacao
                 }
                 $ft = adicionar($picture, $dir);
                 return $ft;
+            } else {
+                return false;
             }
         }
     }
@@ -66,7 +68,7 @@ abstract class Operacao
     )
     {
         global $pdo;
-        $sql = $pdo->prepare('SELECT PHOTOS.URL 
+        $sql = $pdo->prepare('SELECT PHOTOS.URL, PHOTOS.FK_PHOTOS_COMMENT_ID 
         FROM PHOTOS WHERE '.$campo.' = :valor');
         $sql->bindValue(':valor', $valor);
         $sql->execute();
