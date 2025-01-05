@@ -39,7 +39,9 @@ class Anuncio extends Operacao
         (SELECT PHOTOS.URL FROM PHOTOS WHERE FK_PHOTOS_ANNOUNCEMENT_ID = 
         ID_ANNOUNCEMENT LIMIT 1) AS PHOTO FROM ANNOUNCEMENTS INNER JOIN CATEGORY ON 
         ANNOUNCEMENTS.FK_ANNOUNCEMENT_CATEGORY_ID = CATEGORY.ID_CATEGORY 
-        ORDER BY(ID_ANNOUNCEMENT) DESC; ');
+        WHERE ANNOUNCEMENTS.FK_ANNOUNCEMENT_USER_ID = :id
+        ORDER BY(ID_ANNOUNCEMENT) DESC');
+        $sql->bindValue(':id', $id);
         $sql->execute();
         if ($sql->rowCount() > 0) {
             $data = $sql->fetchAll(PDO::FETCH_ASSOC);

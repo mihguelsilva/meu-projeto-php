@@ -243,28 +243,29 @@ $ANUNCIO_FOTOS = $ANUNCIO->consultarFotos('FK_PHOTOS_ANNOUNCEMENT_ID', $_GET['id
 				<div class="col-xl-8 col-sm-4 mx-auto mb-3 border text-break" style="padding: 20px;">
 					<span class="fs-6 fw-bold"><?php echo $COMENTARIO['USERNAME'] ?></span> &nbsp;<span class="badge bg-secondary text-wrap" style="font-size:10pt;">2025-01-02</span> <br>
 					<?php
-						foreach($ANUNCIO_FOTOS as $FOTO) {
-							if ($FOTO['FK_PHOTOS_COMMENT_ID'] == $COMENTARIO['ID_COMMENT']) {
-								$FOTO_COMENTARIO = '/img/comment/'.$COMENTARIO['ID_COMMENT'].'/'.$FOTO['URL'];
-								?>
-								<img src="<?php echo $FOTO_COMENTARIO; ?>" class="img_fluid img-thumbnail">
-								<?php
-							}
-						}
+					foreach ($ANUNCIO_FOTOS as $FOTO) {
+						if ($FOTO['FK_PHOTOS_COMMENT_ID'] == $COMENTARIO['ID_COMMENT']) {
+							$FOTO_COMENTARIO = '/img/comment/' . $COMENTARIO['ID_COMMENT'] . '/' . $FOTO['URL'];
 					?>
-					<p style="font-size:14pt;"><?php echo $COMENTARIO['CONTENT']?></p>
-					<div class="btn-group">
-						<?php
-						if (isset($_SESSION['LOGIN'])) {
+							<img src="<?php echo $FOTO_COMENTARIO; ?>" class="img_fluid img-thumbnail">
+					<?php
+						}
+					}
+					?>
+					<p style="font-size:14pt;"><?php echo $COMENTARIO['CONTENT'] ?></p>
+					<?php
+					if (isset($_SESSION['LOGIN'])) {
 						if (
-							$_SESSION['LOGIN'] == $COMENTARIO['FK_COMMENTS_USER_ID'] || 
-							$SESSION['LOGIN'] == $VER_ANUNCIO['ID_USER']
-							) {
-						?>
-						<a href="/opt/comentario.php" class="btn btn-sm btn-outline-light">Editar</a>
-						<a href="/ops/comentario.php?action=deletar&id=<?php echo $COMENTARIO['ID_COMMENT'] ?>&an=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-outline-danger">Deletar</a>
-						<?php } } ?>
-					</div>
+							$_SESSION['LOGIN'] == $COMENTARIO['FK_COMMENTS_USER_ID'] ||
+							$_SESSION['LOGIN'] == $VER_ANUNCIO['ID_USER']
+						) {
+					?>
+							<div class="btn-group">
+								<a href="/opt/comentario.php" class="btn btn-sm btn-outline-light">Editar</a>
+								<a href="/ops/comentario.php?action=deletar&id=<?php echo $COMENTARIO['ID_COMMENT'] ?>&an=<?php echo $_GET['id']; ?>" class="btn btn-sm btn-outline-danger">Deletar</a>
+							</div>
+					<?php }
+					} ?>
 				</div>
 			<?php
 			}

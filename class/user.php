@@ -82,12 +82,12 @@ class Usuario extends Operacao
                 $_SESSION['NAME'] = $data['NAME'];
                 $_SESSION['PHOTO'] = $data['PHOTO'];
                 $_SESSION['GENDER'] = $data['GENDER'];
-                return true;
+                return array('mgs'=>'seja bem-vindo', 'status'=>true);
             } else {
-                return "Sua conta está desativada";
+                return array('msg'=>'sua conta está desativada', 'status'=>false);
             }
         } else {
-            return "Credenciais incorretas";
+            return array('msg'=>'credenciais incorretas', 'status'=>false);
         }
     }
     public function ConsultarTudo($id)

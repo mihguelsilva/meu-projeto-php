@@ -100,7 +100,7 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			<h4 class="card-title"><?php echo $t['TITLE']; ?></h4>
 			<?php
 			if ($t['PHOTO'] != NULL) {
-			    $AN_PHOTO = '/img/ads/'.$t['ID_USER'].'/'.$t['PHOTO'];
+			    $AN_PHOTO = '/img/ads/'.$t['ID_ANNOUNCEMENT'].'/'.$t['PHOTO'];
 			?>
 			    <img class="card-img-top" src="<?php echo $AN_PHOTO; ?>" alt="Card image" width="120px">
 			<?php
