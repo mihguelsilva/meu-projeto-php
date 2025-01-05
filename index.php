@@ -1,5 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'global.php';
+require_once $_SERVER['DOCUMENT_ROOT']
+.DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR
+.'global.php';
 require_once CONNECT;
 require_once CL_ANNOUNCEMENT;
 $ANUNCIO = new Anuncio();
@@ -98,13 +100,13 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 			<h4 class="card-title"><?php echo $t['TITLE']; ?></h4>
 			<?php
 			if ($t['PHOTO'] != NULL) {
-			    $AN_PHOTO = '/img/ads/'.$t['USER_ID'].'/'.$t['PHOTO'];
+			    $AN_PHOTO = '/img/ads/'.$t['ID_USER'].'/'.$t['PHOTO'];
 			?>
-			    <img class="card-img-top" src="<?php echo $AN_PHOTO; ?>" alt="Card image" style="120px">
+			    <img class="card-img-top" src="<?php echo $AN_PHOTO; ?>" alt="Card image" width="120px">
 			<?php
 			} else {
 			?>
-			    <img class="card-img-top" src="/img/no-image.jpg" alt="Card image" style="120px">
+			    <img class="card-img-top" src="/img/no-image.jpg" alt="Card image" width="120px">
 			<?php } ?>
 			<div class="card-body">
 			    <p class="card-text">

@@ -39,7 +39,7 @@ $USER = new Usuario();
 	<section class='container mx-auto mt-5 mb-5'>
 		<div class="row">
 			<div class="col-xl-6 col-md-10 col-sm-12 mx-auto">
-				<form method="POST" class="was-validated" enctype="multipart/form-data">
+				<form method="POST" class="was-validated" enctype="multipart/form-data" action="/ops/usuario.php">
 					<h2>Dados Pessoais</h2>
 					<div class="mb-3">
 						<label class="form-label" for="foto-perfil">Foto de Perfil</label>
@@ -122,7 +122,7 @@ $USER = new Usuario();
 					<div class="mb-3">
 						<button type="button" id="celular" class="btn btn-success telefone w-100">Adicionar Telefone Celular</button>
 					</div>
-					<button type="submit" class="btn btn-light" value="Registrar" name="registrar" id="registrar">Registrar</button>
+					<button type="submit" class="btn btn-light" value="cadastrar" name="action" id="registrar">Registrar</button>
 				</form>
 			</div>
 		</div>
@@ -130,79 +130,3 @@ $USER = new Usuario();
 </body>
 
 </html>
-<?php
-if (isset($_FILES['foto-perfil']) && !empty($_FILES['foto-perfil'])) {
-	$REG_FOTO = $_FILES['foto-perfil'];
-} else {
-	$REG_FOTO = null;
-}
-if (isset($_POST['registrar'])) {
-	$REG_NOME = addslashes($_POST['nome']);
-	$REG_EMAIL = addslashes($_POST['email']);
-	$REG_CPF_CNPJ = addslashes($_POST['cpf-cnpj']);
-	$REG_CPF_CNPJ = preg_replace('/(\.){0,}(\-){0,}(\/){0,}/i', "", $REG_CPF_CNPJ);
-	$REG_GENERO = addslashes($_POST['genero']);
-	$REG_USER = addslashes($_POST['usuario']);
-	$REG_SENHA = addslashes($_POST['senha']);
-	$REG_CEP = addslashes($_POST['cep']);
-	$REG_NUMERO = addslashes($_POST['numero']);
-	$REG_RUA = addslashes($_POST['rua']);
-	$REG_BAIRRO = addslashes($_POST['bairro']);
-	$REG_CIDADE = addslashes($_POST['cidade']);
-	$REG_ESTADO = addslashes($_POST['estado']);
-	if (isset($_POST['residencial'])) {
-		foreach ($_POST['residencial'] as $KEY => $VALUE) {
-			$REG_RESIDENCIAL[$KEY] = addslashes($VALUE);
-		}
-	} else {
-		$REG_RESIDENCIAL = array();
-	}
-	if (isset($_POST['comercial'])) {
-		foreach ($_POST['comercial'] as $KEY => $VALUE) {
-			$REG_COMERCIAL[$KEY] = addslashes($VALUE);
-		}
-	} else {
-		$REG_COMERCIAL = array();
-	}
-	if (isset($_POST['celular'])) {
-		foreach ($_POST['celular'] as $KEY => $VALUE) {
-			$REG_CELULAR[$KEY] = addslashes($VALUE);
-		}
-	} else {
-		$REG_CELULAR = array();
-	}
-	function setarValores(&$MEU_ARRAY)
-	{
-		if (count($MEU_ARRAY) == 0) {
-			array_push($MEU_ARRAY, NULL, NULL, NULL);
-		} else if (count($MEU_ARRAY) == 1) {
-			array_push($MEU_ARRAY, NULL, NULL);
-		} else if (count($MEU_ARRAY) == 2) {
-			array_push($MEU_ARRAY, NULL);
-		}
-	}
-	setarValores($REG_RESIDENCIAL);
-	setarValores($REG_COMERCIAL);
-	setarValores($REG_CELULAR);
-	if ($USER->cadastrar($REG_FOTO, $REG_NOME, $REG_EMAIL, $REG_CPF_CNPJ, $REG_GENERO, $REG_USER, $REG_SENHA, $REG_CEP, $REG_NUMERO, $REG_RUA, $REG_BAIRRO, $REG_CIDADE, $REG_ESTADO, $REG_RESIDENCIAL, $REG_COMERCIAL, $REG_CELULAR)) {
-		echo '<script>
-		Swal.fire({
-  			title: "Cadastro realizado com sucesso!",
-  			icon: "success",
-  			draggable: true,
-			confirmButtonText: `
-    <a href="/login" style="text-decoration:none;color:black;"><i class="fa fa-thumbs-up"></i> OK!</a>
-  `,
-		});
-		</script>';
-	} else {
-		echo '<script>
-		Swal.fire({
-  			icon: "error",
-  			title: "Cadastro mal sucedido",
-  			text: "O cadastro já existe! Verifique se sua conta está desativada.",
-		});
-		</script>';
-	}
-}
-?>

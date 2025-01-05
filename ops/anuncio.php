@@ -7,32 +7,65 @@ if (!isset($_SESSION['LOGIN']) && !isset($_SESSION['NAME'])) {
     header('Location: /');
 } else if (isset($_POST['action'])) {
     if ($_POST['action'] == 'criar-anuncio') {
-        if (isset($_FILES['fotos'])) {
-            $AN_FOTOS = $_FILES['fotos'];
-        } else {
-            $AN_FOTOS = array();
-        }
         $AN_TITULO = addslashes($_POST['titulo']);
         $AN_CATEGORIA = addslashes($_POST['categoria']);
-	$AN_ESTADO = addslashes($_POST['estado']);
-	$AN_QUANTIDADE = addslashes($_POST['quantidade']);
+        $AN_ESTADO = addslashes($_POST['estado']);
+        $AN_QUANTIDADE = addslashes($_POST['quantidade']);
         $AN_DESCRICAO = addslashes($_POST['descricao']);
         $AN_VALOR = addslashes($_POST['valor']);
         $AN_DATA = date('Y-m-d');
         $AN_FICHA = addslashes($_POST['ficha-tecnica']);
-        echo count($AN_FOTOS);
-        print_r($AN_FOTOS);
-        $ANUNCIO->criarAnuncio($AN_FOTOS, $AN_TITULO, $AN_CATEGORIA, $AN_ESTADO, $AN_QUANTIDADE, $AN_DESCRICAO, $AN_VALOR, $AN_DATA, $AN_FICHA, $_SESSION['LOGIN']);
+        $id_anuncio = $ANUNCIO->criarAnuncio(
+            $AN_TITULO,
+            $AN_CATEGORIA,
+            $AN_ESTADO,
+            $AN_QUANTIDADE,
+            $AN_DESCRICAO,
+            $AN_VALOR,
+            $AN_DATA,
+            $AN_FICHA,
+            $_SESSION['LOGIN']
+        );
+        $dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'
+        .DIRECTORY_SEPARATOR.'ads'.DIRECTORY_SEPARATOR.$_SESSION['LOGIN'];
+        $fotos = $ANUNCIO->manipularFotos($_FILES['fotos'], $dir, 'cadastrar');
+        $ANUNCIO->cadastrarFotos('FK_PHOTOS_ANNOUNCEMENT_ID', $fotos, $id_anuncio);
         header('Location: /page/meus-anuncios.php');
     }
 } else if (isset($_GET['action'])) {
     if ($_GET['action'] == 'deletar') {
         if ($_GET['fld'] == 'anuncio') {
+            /*
             $ANUNCIO->deletarAnuncio($_GET['id'], $_SESSION['LOGIN']);
             header('Location: /page/meus-anuncios.php');
+            */
+            $fotos = $ANUNCIO->consultarFotos(
+                'FK_PHOTOS_ANNOUNCEMENT_ID',
+                $_GET['id']
+            );
+            $dir = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'img'
+            .DIRECTORY_SEPARATOR.'ads'.DIRECTORY_SEPARATOR.$_GET['id'];
+            foreach($fotos as $chave => $valor) {
+                $DELETAR_FOTOS[$chave] = $valor['URL'];
+            }
+            $ANUNCIO->manipularFotos(
+                $DELETAR_FOTOS, 
+                $dir, 
+                'deletar'
+            );
+            $ANUNCIO->deletarDado(
+                'PHOTOS', 
+                'FK_PHOTOS_ANNOUNCEMENT_ID', 
+                $_GET['id']
+            );
+            $ANUNCIO->deletarDado(
+                'ANNOUNCEMENTS', 
+                'ID_ANNOUNCEMENT', 
+                $_GET['id']
+            );
+            header('Location:/page/meus-anuncios.php');
         }
     }
 } else {
     header('Location: /');
 }
-?>
