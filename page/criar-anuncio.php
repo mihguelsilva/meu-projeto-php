@@ -74,7 +74,8 @@ if (isset($_SESSION['LOGIN']) && isset($_SESSION['NAME'])) {
 		    <form method="POST" class="was-validated" action="/ops/anuncio.php" enctype="multipart/form-data">
 			<div class="mt-5">
 			    <label class="form-label" for="fotos">Imagens do anúncio</label>
-			    <input class="form-control" type="file" name="fotos[]" id="fotos" multiple>
+			    <input class="form-control id-invalid" type="file" name="fotos[]" id="fotos" multiple>
+				<div class="feedback-invalid">Você só pode carregar duas fotos</div>
 			</div>
 			<div class="has-validation mt-3">
 			    <label class="form-label" for="titulo">Título</label>

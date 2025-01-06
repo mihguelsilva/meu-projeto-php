@@ -5,14 +5,14 @@ require_once $_SERVER['DOCUMENT_ROOT']
 class Anuncio extends Operacao
 {
     public function criarAnuncio(
-        $titulo, 
-        $categoria, 
-        $estado, 
-        $quantidade, 
-        $descricao, 
-        $valor, 
-        $data, 
-        $ficha, 
+        $titulo,
+        $categoria,
+        $estado,
+        $quantidade,
+        $descricao,
+        $valor,
+        $data,
+        $ficha,
         $fk_id_user)
     {
         global $pdo;
@@ -33,12 +33,13 @@ class Anuncio extends Operacao
     public function meusAnuncios($id)
     {
         global $pdo;
-        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.TITLE, ANNOUNCEMENTS.QUANTITY, 
-        ANNOUNCEMENTS.ANNOUNCEMENT_VALUE, ANNOUNCEMENTS.ANNOUNCEMENT_DATE, 
-        ANNOUNCEMENTS.ID_ANNOUNCEMENT, CATEGORY.NAME AS CATEGORY, 
-        (SELECT PHOTOS.URL FROM PHOTOS WHERE FK_PHOTOS_ANNOUNCEMENT_ID = 
-        ID_ANNOUNCEMENT LIMIT 1) AS PHOTO FROM ANNOUNCEMENTS INNER JOIN CATEGORY ON 
-        ANNOUNCEMENTS.FK_ANNOUNCEMENT_CATEGORY_ID = CATEGORY.ID_CATEGORY 
+        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.TITLE, ANNOUNCEMENTS.QUANTITY,
+        ANNOUNCEMENTS.ANNOUNCEMENT_VALUE, ANNOUNCEMENTS.ANNOUNCEMENT_DATE,
+        ANNOUNCEMENTS.ID_ANNOUNCEMENT, CATEGORY.NAME AS CATEGORY,
+        (SELECT PHOTOS.URL FROM PHOTOS WHERE PHOTOS.FK_PHOTOS_ANNOUNCEMENT_ID =
+        ANNOUNCEMENTS.ID_ANNOUNCEMENT AND PHOTOS.FK_PHOTOS_COMMENT_ID IS NULL LIMIT 1) AS PHOTO 
+        FROM ANNOUNCEMENTS INNER JOIN CATEGORY ON
+        ANNOUNCEMENTS.FK_ANNOUNCEMENT_CATEGORY_ID = CATEGORY.ID_CATEGORY
         WHERE ANNOUNCEMENTS.FK_ANNOUNCEMENT_USER_ID = :id
         ORDER BY(ID_ANNOUNCEMENT) DESC');
         $sql->bindValue(':id', $id);
@@ -53,11 +54,11 @@ class Anuncio extends Operacao
     public function verAnuncio($id)
     {
         global $pdo;
-        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.TITLE, 
-        ANNOUNCEMENTS.STATUS, ANNOUNCEMENTS.DESCRIPTION, 
+        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.TITLE,
+        ANNOUNCEMENTS.STATUS, ANNOUNCEMENTS.DESCRIPTION,
         ANNOUNCEMENTS.QUANTITY, ANNOUNCEMENTS.ANNOUNCEMENT_VALUE,
-        ANNOUNCEMENTS.ANNOUNCEMENT_DATE, ANNOUNCEMENTS.TECHNICAL_SHEET, 
-        USER_REGISTER.NAME, USER_REGISTER.EMAIL, USER_REGISTER.ID_USER FROM 
+        ANNOUNCEMENTS.ANNOUNCEMENT_DATE, ANNOUNCEMENTS.TECHNICAL_SHEET,
+        USER_REGISTER.NAME, USER_REGISTER.EMAIL, USER_REGISTER.ID_USER FROM
         ANNOUNCEMENTS INNER JOIN USER_REGISTER ON
         ANNOUNCEMENTS.FK_ANNOUNCEMENT_USER_ID = USER_REGISTER.ID_USER WHERE
         ANNOUNCEMENTS.ID_ANNOUNCEMENT = :id');
@@ -74,15 +75,6 @@ class Anuncio extends Operacao
             } else {
                 $data['PHONE'] = array();
             }
-            $sql = $pdo->prepare('SELECT PHOTOS.URL FROM PHOTOS WHERE
-            PHOTOS.FK_PHOTOS_ANNOUNCEMENT_ID = :id');
-            $sql->bindValue(':id', $id);
-            $sql->execute();
-            if ($sql->rowCount() > 0) {
-                $data['PHOTOS'] = $sql->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                $data['PHOTOS'] = array();
-            }
         } else {
             $data = NULL;
         }
@@ -91,13 +83,14 @@ class Anuncio extends Operacao
     public function verTodosAnuncios()
     {
         global $pdo;
-        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.ID_ANNOUNCEMENT, ANNOUNCEMENTS.TITLE, 
-        ANNOUNCEMENTS.QUANTITY, ANNOUNCEMENTS.ANNOUNCEMENT_VALUE, USER_REGISTER.ID_USER, 
-        USER_REGISTER.CITY, USER_REGISTER.STATE, CATEGORY.NAME AS CATEGORY, 
-        (SELECT PHOTOS.URL FROM PHOTOS WHERE PHOTOS.FK_PHOTOS_ANNOUNCEMENT_ID = 
-        ANNOUNCEMENTS.ID_ANNOUNCEMENT LIMIT 1) AS PHOTO FROM ANNOUNCEMENTS INNER JOIN 
-        USER_REGISTER ON ANNOUNCEMENTS.FK_ANNOUNCEMENT_USER_ID = USER_REGISTER.ID_USER 
-        INNER JOIN CATEGORY ON ANNOUNCEMENTS.FK_ANNOUNCEMENT_CATEGORY_ID = CATEGORY.ID_CATEGORY 
+        $sql = $pdo->prepare('SELECT ANNOUNCEMENTS.ID_ANNOUNCEMENT, ANNOUNCEMENTS.TITLE,
+        ANNOUNCEMENTS.QUANTITY, ANNOUNCEMENTS.ANNOUNCEMENT_VALUE, USER_REGISTER.ID_USER,
+        USER_REGISTER.CITY, USER_REGISTER.STATE, CATEGORY.NAME AS CATEGORY,
+        (SELECT PHOTOS.URL FROM PHOTOS WHERE PHOTOS.FK_PHOTOS_ANNOUNCEMENT_ID =
+        ANNOUNCEMENTS.ID_ANNOUNCEMENT AND PHOTOS.FK_PHOTOS_COMMENT_ID IS NULL LIMIT 1) AS PHOTO 
+        FROM ANNOUNCEMENTS INNER JOIN
+        USER_REGISTER ON ANNOUNCEMENTS.FK_ANNOUNCEMENT_USER_ID = USER_REGISTER.ID_USER
+        INNER JOIN CATEGORY ON ANNOUNCEMENTS.FK_ANNOUNCEMENT_CATEGORY_ID = CATEGORY.ID_CATEGORY
         ORDER BY(ANNOUNCEMENTS.ID_ANNOUNCEMENT) DESC');
         $sql->execute();
         if ($sql->rowCount() > 0) {
@@ -107,8 +100,31 @@ class Anuncio extends Operacao
         }
         return $data;
     }
-    public function atualizarAnuncio()
+    public function atualizarAnuncio(
+        $titulo,
+        $categoria,
+        $estado,
+        $quantidade, 
+        $descricao,
+        $valor,
+        $ficha,
+        $id
+    )
     {
         global $pdo;
+        $sql = $pdo->prepare('UPDATE ANNOUNCEMENTS SET TITLE = :titulo,
+        FK_ANNOUNCEMENT_CATEGORY_ID = :categoria, STATUS = :estado,
+        QUANTITY = :quantidade, DESCRIPTION = :descricao, 
+        ANNOUNCEMENT_VALUE = :valor, TECHNICAL_SHEET = :ficha 
+        WHERE ID_ANNOUNCEMENT = :id');
+        $sql->bindValue(':titulo', $titulo);
+        $sql->bindValue(':categoria', $categoria);
+        $sql->bindValue(':estado', $estado);
+        $sql->bindValue(':descricao', $descricao);
+        $sql->bindValue(':quantidade', $quantidade);
+        $sql->bindValue(':valor', $valor);
+        $sql->bindValue(':ficha', $ficha);
+        $sql->bindValue(':id', $id);
+        $sql->execute();
     }
 }

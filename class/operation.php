@@ -101,4 +101,22 @@ abstract class Operacao
         $sql->bindValue(':valor', $valor);
         $sql->execute();
     }
+    public function consultarTabela(
+        $tabela,
+        $campo,
+        $valor
+    )
+    {
+        global $pdo;
+        $sql = $pdo->prepare('SELECT * FROM '.$tabela.'
+        WHERE '.$campo.' = :valor');
+        $sql->bindValue(':valor', $valor);
+        $sql->execute();
+        if ($sql->rowCount() > 0) {
+            $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $data = array();
+        }
+        return $data;
+    }
 }
